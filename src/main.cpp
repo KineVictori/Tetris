@@ -5,6 +5,7 @@ using namespace threepp;
 
 namespace {
 
+    // usikker
     auto createBox(const Vector3& pos, const Color& color) {
         auto geometry = BoxGeometry::create();
         auto material = MeshBasicMaterial::create();
@@ -15,6 +16,7 @@ namespace {
         return mesh;
     }
 
+    // sets the keys to control the boxes (mulig å forkorte koden?)
     class MyKeyListener: public KeyListener {
 
     public:
@@ -62,23 +64,35 @@ namespace {
 
 int main() {
 
+    // creates the canvas
     Canvas canvas("tetris", {{"aa", 4}});
+
     GLRenderer renderer(canvas.size());
-    renderer.setClearColor(Color::aliceblue);
+    renderer.setClearColor(Color::lightsteelblue);
 
+    // sets the camera position
     auto camera = PerspectiveCamera::create();
-    camera->position.z = 5;
-
+    camera->position.z = 10;
+    canvas.onWindowResize([&] (WindowSize size) {
+        camera->aspect = size.aspect();
+        camera->updateProjectionMatrix();
+        renderer.setSize(size);
+    });
+    // moves the objects instead of the camera with keys
     MyKeyListener l(*camera);
     canvas.addKeyListener(&l);
 
     auto scene = Scene::create();
+    auto light = PointLight::create(Color::aliceblue, 0.5);
+    scene->add(light);
 
+    // creates the boxes
     auto group = Group::create();
-    group->add(createBox({-1, 0, 0}, Color::lightpink));
-    group->add(createBox({1, 0, 0}, Color::lightblue));
+    group->add(createBox({-1, 0, 0}, Color::blueviolet));
+    group->add(createBox({1, 0, 0}, Color::blue));
     scene->add(group);
 
+    // makes stuff move at a specific speed
     Clock clock;
     canvas.animate([&] {
         auto dt = clock.getDelta();
