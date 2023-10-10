@@ -16,6 +16,34 @@ namespace {
         return mesh;
     }
 
+    class MyKeyListener: public KeyListener {
+
+    public:
+
+        MyKeyListener(Object3D& obj): obj_(obj) {}
+
+        void onKeyPressed(KeyEvent evt) override {
+
+            if (evt.key == Key::W) {
+                obj_.position.z += 1 * dt_;
+            }
+        }
+
+        void onKeyRepeat(KeyEvent evt) override {
+            if (evt.key == Key::W) {
+                obj_.position.z += 1 * dt_;
+            }
+        }
+
+        void setDeltaTime(float dt) {
+            dt_ = dt;
+        }
+
+    private:
+        float dt_{0};
+        Object3D& obj_;
+    };
+
 }// namespace
 
 int main() {
@@ -27,7 +55,10 @@ int main() {
     auto camera = PerspectiveCamera::create();
     camera->position.z = 5;
 
-    OrbitControls controls{*camera, canvas};
+    MyKeyListener l(*camera);
+    canvas.addKeyListener(&l);
+
+    //OrbitControls controls{*camera, canvas};
 
     auto scene = Scene::create();
 
@@ -36,10 +67,10 @@ int main() {
     group->add(createBox({1, 0, 0}, Color::blue));
     scene->add(group);
 
-    renderer.enableTextRendering();
-    int textYOffset = 30;
-    auto& textHandle = renderer.textHandle("Hello World");
-    textHandle.setPosition(0, canvas.size().height - textYOffset);
+    TextRenderer textRenderer;
+    auto& textHandle = textRenderer.createHandle("Hello world");
+    textHandle.verticalAlignment = threepp::TextHandle::VerticalAlignment::BOTTOM;
+    textHandle.setPosition(0, canvas.size().height);
     textHandle.scale = 2;
 
     std::array<float, 3> posBuf{};
@@ -48,7 +79,7 @@ int main() {
         ImGui::SetNextWindowSize({230, 0}, 0);
         ImGui::Begin("Demo");
         ImGui::SliderFloat3("position", posBuf.data(), -1.f, 1.f);
-        controls.enabled = !ImGui::IsWindowHovered();
+        //controls.enabled = !ImGui::IsWindowHovered();
         ImGui::End();
     });
 
@@ -56,18 +87,24 @@ int main() {
         camera->aspect = size.aspect();
         camera->updateProjectionMatrix();
         renderer.setSize(size);
-        textHandle.setPosition(0, size.height - textYOffset);
+        textHandle.setPosition(0, size.height);
     });
 
     Clock clock;
     float rotationSpeed = 1;
     canvas.animate([&] {
         auto dt = clock.getDelta();
-        group->rotation.y += rotationSpeed * dt;
+        l.setDeltaTime(dt);
+        //group->rotation.y += rotationSpeed * dt;
 
         renderer.render(*scene, *camera);
+
+        renderer.resetState();// needed when using TextRenderer
+        textRenderer.render();
 
         ui.render();
         group->position.fromArray(posBuf);
     });
 }
+
+
