@@ -44,7 +44,7 @@ namespace {
             if (evt.key == Key::A) {
                 obj_.position.x += 1 * dt_;
             }
-            if (evt.key == Key::W) {
+            if (evt.key == Key::W) {            // rotate later
                 obj_.position.y -= 1 * dt_;
             }
             if (evt.key == Key::S) {
@@ -65,32 +65,52 @@ namespace {
 int main() {
 
     // creates the canvas
-    Canvas canvas("tetris", {{"aa", 4}});
+    Canvas canvas("tetris", {{"aa", 5}});
+    //canvas.size(int 1000, int 1000);
 
     GLRenderer renderer(canvas.size());
-    renderer.setClearColor(Color::lightsteelblue);
+    renderer.setClearColor(0x183f3e); // use 0x for # in hex
+    //renderer.shadowMap().enabled = true;
+    //renderer.shadowMap().type = threepp::ShadowMap::PFCSoft;
+
+    const pointLight1 = THREEPP_POINTLIGHT_HPP(0x88aaff, 0.8, 20);
+    pointLight1.position.set(8, 4, -4);
+    pointLight1.shadowMap().enabled = true;
+
 
     // sets the camera position
-    auto camera = PerspectiveCamera::create();
-    camera->position.z = 10;
+    auto camera = PerspectiveCamera::create(); // OrthographicCamera for 2D
+    camera->position.z = 22;
+
     canvas.onWindowResize([&] (WindowSize size) {
-        camera->aspect = size.aspect();
+        camera->aspect = size.aspect(); // needed only for PerspectiveCamera
         camera->updateProjectionMatrix();
         renderer.setSize(size);
     });
+
     // moves the objects instead of the camera with keys
     MyKeyListener l(*camera);
     canvas.addKeyListener(&l);
 
     auto scene = Scene::create();
-    auto light = PointLight::create(Color::aliceblue, 0.5);
-    scene->add(light);
+    //auto light = AmbientLight::create(Color::aliceblue, 0.5);
+    //scene->add(light);
+
+
 
     // creates the boxes
     auto group = Group::create();
-    group->add(createBox({-1, 0, 0}, Color::blueviolet));
-    group->add(createBox({1, 0, 0}, Color::blue));
+    group->add(createBox({-1, 0, 0}, Color::orange));
+    group->add(createBox({1, 0, 0}, Color::yellow));
     scene->add(group);
+
+    // creates text for Points
+    TextRenderer textRenderer;
+
+    auto& textHandle = textRenderer.createHandle("Points: ");
+    textHandle.verticalAlignment = threepp::TextHandle::VerticalAlignment::TOP;
+    textHandle.setPosition(0, 0);
+    textHandle.scale = 2;
 
     // makes stuff move at a specific speed
     Clock clock;
@@ -99,5 +119,10 @@ int main() {
         l.setDeltaTime(dt);
 
         renderer.render(*scene, *camera);
+
+        renderer.resetState(); // needed when using TextRenderer
+        textRenderer.render();
+
     });
 }
+
