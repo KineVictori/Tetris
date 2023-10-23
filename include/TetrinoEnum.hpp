@@ -8,7 +8,8 @@ enum shapes {
     J = 2,
     L = 3,
     S = 4,
-    Z = 5
+    Z = 5,
+    T = 6
 };
 
 #endif//EXAM_TETRIS_TETRINOENUM_HPP

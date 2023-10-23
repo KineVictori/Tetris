@@ -27,6 +27,41 @@ Tetrino::Tetrino(shapes shape, const threepp::Vector3& pos, const threepp::Color
             _group->add(ThreeppHelper::createBox({0, -2, 0}, color));
             _group->add(ThreeppHelper::createBox({-1, -2, 0}, color));
         } break;
+
+        case shapes::O: {
+            _group->add(ThreeppHelper::createBox({-1, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({-1, -1, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, -1, 0}, color));
+        } break;
+
+        case shapes::S: {
+            _group->add(ThreeppHelper::createBox({0, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({1, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, -1, 0}, color));
+            _group->add(ThreeppHelper::createBox({-1, -1, 0}, color));
+        } break;
+
+        case shapes::Z: {
+            _group->add(ThreeppHelper::createBox({0, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({-1, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, -1, 0}, color));
+            _group->add(ThreeppHelper::createBox({1, -1, 0}, color));
+        } break;
+
+        case shapes::L: {
+            _group->add(ThreeppHelper::createBox({0, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, -1, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, -2, 0}, color));
+            _group->add(ThreeppHelper::createBox({1, -2, 0}, color));
+        } break;
+
+        case shapes::T: {
+            _group->add(ThreeppHelper::createBox({0, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({0, -1, 0}, color));
+            _group->add(ThreeppHelper::createBox({1, 0, 0}, color));
+            _group->add(ThreeppHelper::createBox({-1, 0, 0}, color));
+        } break;
     }
 
 
