@@ -11,6 +11,7 @@ set(
         include/Tetrino.hpp
         include/ThreeppHelper.hpp
         include/TetrinoEnum.hpp
+        include/TetrisGame.hpp
 )
 
 set(
@@ -19,6 +20,7 @@ set(
         src/MyKeyListener.cpp
         src/Tetrino.cpp
         src/ThreeppHelper.cpp
+        src/TetrisGame.cpp
 )
 
 add_executable(tetris ${sources} ${headers})

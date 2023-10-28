@@ -63,14 +63,6 @@ Tetrino::Tetrino(shapes shape, const threepp::Vector3& pos, const threepp::Color
             _group->add(ThreeppHelper::createBox({-1, 0, 0}, color));
         } break;
     }
-
-
-
-
-    //    auto group = Group::create();
-    //    group->add(createBox({-1, 0, 0}, Color::orange));
-    //    group->add(createBox({1, 0, 0}, Color::yellow));
-    //    scene->add(group);
 }
 
 std::shared_ptr<Group> Tetrino::getGroup() {

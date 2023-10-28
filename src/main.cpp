@@ -3,6 +3,7 @@
 #include "MyKeyListener.hpp"
 #include "Tetrino.hpp"
 #include "TetrinoEnum.hpp"
+#include "TetrisGame.hpp"
 
 using namespace threepp;
 
@@ -26,7 +27,7 @@ int main() {
 
     // sets the camera position
     auto camera = PerspectiveCamera::create(); // OrthographicCamera for 2D
-    camera->position.z = 22;
+    camera->position.z = 30;
     camera->aspect = canvas.size().aspect();
     camera->updateProjectionMatrix();
 
@@ -49,10 +50,15 @@ int main() {
 //    group->add(createBox({1, 0, 0}, Color::yellow));
 //    scene->add(group);
 
-    Tetrino L {
-            shapes::L, Vector3{0, 10, 0}, Color::orange
+    TetrisGame game{};
+    game.Border(Vector3{0, 10, 0}, Color::grey);
+    scene->add(game.getGroup());
+
+
+    Tetrino T {
+            shapes::T, Vector3{0, 10, 0}, Color::orange
     };
-    scene->add(L.getGroup());
+    scene->add(T.getGroup());
 
     // creates text for Points
     TextRenderer textRenderer;
@@ -77,9 +83,9 @@ int main() {
 
         iterations++;
 
-//        if (iterations % 60 == 0) {
-//            group->position.add(Vector3(0, -1, 0));
-//        }
+        if (iterations % 60 == 0) {
+            T.getGroup()->position.add(Vector3(0, -1, 0));
+        }
     });
 }
 
