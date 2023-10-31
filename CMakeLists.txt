@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 project(exam_tetris)
 
+option(Testing_Tetris "tetris test" on)
+
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(threepp CONFIG REQUIRED)
@@ -27,3 +29,28 @@ add_executable(tetris ${sources} ${headers})
 
 target_include_directories(tetris PUBLIC include)
 target_link_libraries(tetris PRIVATE threepp::threepp)
+
+cmake_minimum_required(VERSION 3.18)
+project(ais1003_exercise1)
+
+set(CMAKE_CXX_STANDARD 20)
+
+# ============================
+# Testing code copied from excercise1 from Markaren on GitHub
+# ============================
+
+if (Testing_Tetris)
+
+    # Download Catch2 unit-test framework from GitHub
+    include(FetchContent)
+    FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG v3.4.0
+    )
+    FetchContent_MakeAvailable(Catch2)
+
+    enable_testing()
+    add_subdirectory(tests)
+
+endif ()

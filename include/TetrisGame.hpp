@@ -4,6 +4,7 @@
 
 #include "threepp/threepp.hpp"
 #include "TetrinoEnum.hpp"
+#include "Tetrino.hpp"
 
 using namespace threepp;
 
@@ -12,11 +13,14 @@ class TetrisGame {
 
 public:
     TetrisGame();
-    void Border(const threepp::Vector3& pos, const threepp::Color& color);
-    std::shared_ptr<Group> getGroup ();
+    std::shared_ptr<Group> getBorderGroup ();
+    std::shared_ptr<Group> getTetrinoGroup ();
 
 private:
-    std::shared_ptr<Group> _group;
+    std::shared_ptr<Group> _borderGroup;
+    Tetrino _current_tetrino;
+
+    //int gridSize_{};
 };
 
 

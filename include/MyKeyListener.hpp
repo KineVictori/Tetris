@@ -3,6 +3,7 @@
 #define EXAM_TETRIS_MYKEYLISTENER_HPP
 
 #include "threepp/threepp.hpp"
+#include "TetrisGame.hpp"
 
 using namespace threepp;
 
@@ -11,19 +12,19 @@ using namespace threepp;
 class MyKeyListener: public KeyListener {
 
     public:
-        MyKeyListener(Object3D& obj);
+        MyKeyListener(TetrisGame& TetrisGame);
 
-        void onKeyPressed(KeyEvent evt);
+        void onKeyPressed(KeyEvent evt) override;
 
-        void onKeyRepeat(KeyEvent evt);
+        void onKeyRepeat(KeyEvent evt) override;
 
-        void setDeltaTime(float dt);
+        //void setDeltaTime(float dt);
 
     private:
-        float dt_{0};
-        Object3D& obj_;
+        //float dt_{0};
+        TetrisGame& TetrisGame_;
 };
 
 
 
-#endif//THREEPP_VCPKG_DEMO_MYKEYLISTENER_HPP
+#endif//EXAM_TETRIS_MYKEYLISTENER_HPP

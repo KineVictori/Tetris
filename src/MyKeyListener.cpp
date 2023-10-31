@@ -4,40 +4,37 @@
 
 using namespace threepp;
 
-
 // sets the keys to move the boxes
-MyKeyListener::MyKeyListener (Object3D& obj): obj_(obj) {}
+MyKeyListener::MyKeyListener (TetrisGame& TetrisGame): TetrisGame_(TetrisGame) {}
 
 void MyKeyListener::onKeyPressed(KeyEvent evt) {
     if (evt.key == Key::D) {            // override? Ask!
-        obj_.position.x -= 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.x += 1;
     }
     if (evt.key == Key::A) {
-        obj_.position.x += 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.x -= 1;
     }
     if (evt.key == Key::W) {            // rotate later
-        obj_.position.y -= 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.y += 1;
     }
     if (evt.key == Key::S) {
-        obj_.position.y += 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.y -= 1;
     }
 }
 
 void MyKeyListener::onKeyRepeat(KeyEvent evt) {
     if (evt.key == Key::D) {
-        obj_.position.x -= 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.x += 1;
     }
     if (evt.key == Key::A) {
-        obj_.position.x += 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.x -= 1;
     }
     if (evt.key == Key::W) {            // rotate later
-        obj_.position.y -= 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.y += 1;
     }
     if (evt.key == Key::S) {
-        obj_.position.y += 1 * dt_;
+        TetrisGame_.getTetrinoGroup()->position.y -= 1;
     }
 }
 
-void MyKeyListener::setDeltaTime(float dt) {
-    dt_ = dt;
-}
+void setDeltaTime(float dt);
