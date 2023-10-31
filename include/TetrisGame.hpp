@@ -16,6 +16,10 @@ public:
     std::shared_ptr<Group> getBorderGroup ();
     std::shared_ptr<Group> getTetrinoGroup ();
 
+    void moveLeft();
+    void moveRight();
+    void moveDown();
+
 private:
     std::shared_ptr<Group> _borderGroup;
     Tetrino _current_tetrino;

@@ -9,31 +9,31 @@ MyKeyListener::MyKeyListener (TetrisGame& TetrisGame): TetrisGame_(TetrisGame) {
 
 void MyKeyListener::onKeyPressed(KeyEvent evt) {
     if (evt.key == Key::D) {            // override? Ask!
-        TetrisGame_.getTetrinoGroup()->position.x += 1;
+        TetrisGame_.moveRight();
     }
     if (evt.key == Key::A) {
-        TetrisGame_.getTetrinoGroup()->position.x -= 1;
+        TetrisGame_.moveLeft();
     }
     if (evt.key == Key::W) {            // rotate later
         TetrisGame_.getTetrinoGroup()->position.y += 1;
     }
     if (evt.key == Key::S) {
-        TetrisGame_.getTetrinoGroup()->position.y -= 1;
+        TetrisGame_.moveDown();
     }
 }
 
 void MyKeyListener::onKeyRepeat(KeyEvent evt) {
     if (evt.key == Key::D) {
-        TetrisGame_.getTetrinoGroup()->position.x += 1;
+        TetrisGame_.moveRight();
     }
     if (evt.key == Key::A) {
-        TetrisGame_.getTetrinoGroup()->position.x -= 1;
+        TetrisGame_.moveLeft();
     }
     if (evt.key == Key::W) {            // rotate later
         TetrisGame_.getTetrinoGroup()->position.y += 1;
     }
     if (evt.key == Key::S) {
-        TetrisGame_.getTetrinoGroup()->position.y -= 1;
+        TetrisGame_.moveDown();
     }
 }
 

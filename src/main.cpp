@@ -73,7 +73,9 @@ int main() {
         iterations++;
 
         if (iterations % 60 == 0) {
-            game.getTetrinoGroup()->position.add(Vector3(0, -1, 0));
+            if (game.getTetrinoGroup()->position.y > -9) {
+                game.getTetrinoGroup()->position.add(Vector3(0, -1, 0));
+            }
         }
     });
 }

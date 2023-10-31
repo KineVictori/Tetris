@@ -31,6 +31,22 @@ std::shared_ptr<Group> TetrisGame::getTetrinoGroup() {
     return _current_tetrino.getGroup();
 }
 
+//
+void TetrisGame::moveLeft() {
+    if (_current_tetrino.getGroup()->position.x > -6) {
+        _current_tetrino.getGroup()->position.x -= 1;
+    }
+}
+void TetrisGame::moveRight() {
+    if (_current_tetrino.getGroup()->position.x < 6) {
+        _current_tetrino.getGroup()->position.x += 1;
+    }
+}
+void TetrisGame::moveDown() {
+    if (_current_tetrino.getGroup()->position.y > -9) {
+        _current_tetrino.getGroup()->position.y -= 1;
+    }
+}
 //explicit TetrisGame(int gridSize)
 //    : gridSize_(gridSize),
 //      snake_(gridSize / 2, gridSize / 2) {
