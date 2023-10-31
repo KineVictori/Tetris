@@ -6,13 +6,13 @@
 TEST_CASE("test tetrino") {
 
     /* fra eksempel
-     * std::string firstname = "Per";
-     * std::string lastname = "Olavsen";
-     *
-     * Person p(firstname, lastname);
-     *
-     * CHECK(firstname == p.getfirstname());
-     * CHECK(lastname == p.getlastname());
+     std::string firstname = "Per";
+     std::string lastname = "Olavsen";
+
+     Person p(firstname, lastname);
+
+     CHECK(firstname == p.getfirstname());
+     CHECK(lastname == p.getlastname());
 
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
