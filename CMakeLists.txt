@@ -14,6 +14,7 @@ set(
         include/ThreeppHelper.hpp
         include/TetrinoEnum.hpp
         include/TetrisGame.hpp
+        include/TetrisScene.hpp
 )
 
 set(
@@ -23,6 +24,7 @@ set(
         src/Tetrino.cpp
         src/ThreeppHelper.cpp
         src/TetrisGame.cpp
+        src/TetrisScene.cpp
 )
 
 add_executable(tetris ${sources} ${headers})

@@ -1,0 +1,34 @@
+
+#ifndef EXAM_TETRIS_TETRISSCENE_HPP
+#define EXAM_TETRIS_TETRISSCENE_HPP
+
+#include <threepp/threepp.hpp>
+#include "TetrisGame.hpp"
+#include "MyKeyListener.hpp"
+#include <vector>
+
+using namespace threepp;
+
+
+class TetrisScene {
+
+public:
+    TetrisScene();
+
+    std::shared_ptr<Scene> getScene();
+    void addKeyListener(MyKeyListener &l);
+    void animateCanvas(TetrisGame &game);
+
+private:
+    Canvas _canvas;
+    GLRenderer _renderer;
+    TextRenderer _textRenderer;
+    std::shared_ptr<PerspectiveCamera> _camera;
+    std::shared_ptr<Scene> _scene;
+    Clock _clock;
+
+    std::vector<TextHandle*> _textHandles;
+};
+
+
+#endif//EXAM_TETRIS_TETRISSCENE_HPP

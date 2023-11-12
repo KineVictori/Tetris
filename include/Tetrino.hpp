@@ -2,7 +2,7 @@
 #ifndef EXAM_TETRIS_TETRINO_HPP
 #define EXAM_TETRIS_TETRINO_HPP
 
-#include "threepp/threepp.hpp"
+#include <threepp/threepp.hpp>
 #include "TetrinoEnum.hpp"
 
 using namespace threepp;

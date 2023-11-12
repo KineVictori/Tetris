@@ -17,18 +17,18 @@ hel kloss bort om gangen, lage ulike Tetrino som klasse
 24/10: fikse map/grid/selve banen, fikse border + en linje som 
 "øverste grense" (rød strek i grid?)
 
-## nå + 24^
-
 31/10: få Tetrino til å gå nedover + kunne styres, stoppe når den
 treffer border/andre tetrino
 
 #### 2/11: delvis innlevering
 
+## nå + 24^
+
 7/11: sende "game over, total poengsum: ..." og evt. restart om 
 "øverste grense linje" treffes, sende inn en ny random Tetrino når
 forrige stopper
 
-14/11: bytte farge på aktiv tetrino når den treffer noe
+14/11: bytte farge på aktiv tetrino når den treffer noe, skygger?
 
 21/11: kunne markere en full rad som "fullført" og få den vekk,
 la alt over falle antall fullførte rader ned

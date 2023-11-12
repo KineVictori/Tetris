@@ -4,7 +4,7 @@
 
 using namespace threepp;
 
-// makes it easier to create a box later
+// makes it easier to create boxes for the tetrinos
 std::shared_ptr<Mesh> ThreeppHelper::createBox(const Vector3& pos, const Color& color) {
     auto geometry = BoxGeometry::create();
     auto material = MeshBasicMaterial::create();

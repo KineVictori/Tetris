@@ -1,6 +1,6 @@
 
 #include "MyKeyListener.hpp"
-#include "threepp/threepp.hpp"
+#include <threepp/threepp.hpp>
 
 using namespace threepp;
 
@@ -14,11 +14,11 @@ void MyKeyListener::onKeyPressed(KeyEvent evt) {
     if (evt.key == Key::A) {
         TetrisGame_.moveLeft();
     }
-    if (evt.key == Key::W) {            // rotate later
-        TetrisGame_.getTetrinoGroup()->position.y += 1;
-    }
     if (evt.key == Key::S) {
         TetrisGame_.moveDown();
+    }
+    if (evt.key == Key::W) {            // rotate later
+        TetrisGame_.rotateTetrino();
     }
 }
 
@@ -28,9 +28,6 @@ void MyKeyListener::onKeyRepeat(KeyEvent evt) {
     }
     if (evt.key == Key::A) {
         TetrisGame_.moveLeft();
-    }
-    if (evt.key == Key::W) {            // rotate later
-        TetrisGame_.getTetrinoGroup()->position.y += 1;
     }
     if (evt.key == Key::S) {
         TetrisGame_.moveDown();

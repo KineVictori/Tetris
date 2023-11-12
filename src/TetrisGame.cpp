@@ -1,7 +1,8 @@
 
 #include "TetrisGame.hpp"
-#include "threepp/threepp.hpp"
+#include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
+#include <array>
 
 using namespace threepp;
 
@@ -31,7 +32,7 @@ std::shared_ptr<Group> TetrisGame::getTetrinoGroup() {
     return _current_tetrino.getGroup();
 }
 
-//
+// controls for MyKeyListener
 void TetrisGame::moveLeft() {
     if (_current_tetrino.getGroup()->position.x > -6) {
         _current_tetrino.getGroup()->position.x -= 1;
@@ -47,6 +48,11 @@ void TetrisGame::moveDown() {
         _current_tetrino.getGroup()->position.y -= 1;
     }
 }
+void TetrisGame::rotateTetrino() {
+    _current_tetrino.getGroup()->rotateZ(-3.1415926 / 2); // lag ny kode
+}
+
+
 //explicit TetrisGame(int gridSize)
 //    : gridSize_(gridSize),
 //      snake_(gridSize / 2, gridSize / 2) {

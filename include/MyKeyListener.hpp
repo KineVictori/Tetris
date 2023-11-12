@@ -2,7 +2,7 @@
 #ifndef EXAM_TETRIS_MYKEYLISTENER_HPP
 #define EXAM_TETRIS_MYKEYLISTENER_HPP
 
-#include "threepp/threepp.hpp"
+#include <threepp/threepp.hpp>
 #include "TetrisGame.hpp"
 
 using namespace threepp;

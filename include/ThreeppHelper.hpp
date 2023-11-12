@@ -2,7 +2,7 @@
 #ifndef EXAM_TETRIS_THREEPPHELPER_HPP
 #define EXAM_TETRIS_THREEPPHELPER_HPP
 
-#include "threepp/threepp.hpp"
+#include <threepp/threepp.hpp>
 
 using namespace threepp;
 
