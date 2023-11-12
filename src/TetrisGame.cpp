@@ -2,7 +2,6 @@
 #include "TetrisGame.hpp"
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
-#include <array>
 
 using namespace threepp;
 

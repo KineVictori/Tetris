@@ -1,8 +1,6 @@
 
 #include <threepp/threepp.hpp>
 #include "MyKeyListener.hpp"
-#include "Tetrino.hpp"
-#include "TetrinoEnum.hpp"
 #include "TetrisGame.hpp"
 #include "TetrisScene.hpp"
 
