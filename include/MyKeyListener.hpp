@@ -12,7 +12,7 @@ using namespace threepp;
 class MyKeyListener: public KeyListener {
 
     public:
-        MyKeyListener(TetrisGame& TetrisGame);
+        explicit MyKeyListener(TetrisGame &tetrisGame);
 
         void onKeyPressed(KeyEvent evt) override;
 

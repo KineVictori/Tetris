@@ -2,7 +2,7 @@
 #ifndef EXAM_TETRIS_TETRINOENUM_HPP
 #define EXAM_TETRIS_TETRINOENUM_HPP
 
-enum shapes {
+enum Shapes {
     O = 0,
     I = 1,
     J = 2,

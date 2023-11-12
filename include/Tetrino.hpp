@@ -11,7 +11,7 @@ using namespace threepp;
 class Tetrino {
 
 public:
-    Tetrino(shapes shape, const Vector3& pos, const Color& color);
+    Tetrino(Shapes shape, const Vector3& pos, const Color& color);
     std::shared_ptr<Group> getGroup ();
 
 private:

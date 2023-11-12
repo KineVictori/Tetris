@@ -32,10 +32,6 @@ add_executable(tetris ${sources} ${headers})
 target_include_directories(tetris PUBLIC include)
 target_link_libraries(tetris PRIVATE threepp::threepp)
 
-cmake_minimum_required(VERSION 3.18)
-project(ais1003_exercise1)
-
-set(CMAKE_CXX_STANDARD 20)
 
 # ============================
 # Testing code copied from excercise1 from Markaren on GitHub

@@ -8,7 +8,7 @@ using namespace threepp;
 //int size = game
 //grid
 
-TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({shapes::T, {0, 10, 0}, Color::orange}) {
+TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({Shapes::T, {0, 10, 0}, Color::orange}) {
 
     // lower line
     for (int i = -8; i < 9; i++) {
