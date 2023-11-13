@@ -22,9 +22,8 @@ class MyKeyListener: public KeyListener {
 
     private:
         //float dt_{0};
-        TetrisGame& TetrisGame_;
+        TetrisGame &_tetrisGame;
 };
-
 
 
 #endif//EXAM_TETRIS_MYKEYLISTENER_HPP

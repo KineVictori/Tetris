@@ -4,33 +4,33 @@
 
 using namespace threepp;
 
-// sets the keys to move the boxes
-MyKeyListener::MyKeyListener (TetrisGame& tetrisGame): TetrisGame_(tetrisGame) {}
+// sets the keys to move the tetrinos
+MyKeyListener::MyKeyListener (TetrisGame& tetrisGame): _tetrisGame(tetrisGame) {}
 
 void MyKeyListener::onKeyPressed(KeyEvent evt) {
     if (evt.key == Key::D) {            // override? Ask!
-        TetrisGame_.moveRight();
+        _tetrisGame.moveRight();
     }
     if (evt.key == Key::A) {
-        TetrisGame_.moveLeft();
+        _tetrisGame.moveLeft();
     }
     if (evt.key == Key::S) {
-        TetrisGame_.moveDown();
+        _tetrisGame.moveDown();
     }
-    if (evt.key == Key::W) {            // rotate later
-        TetrisGame_.rotateTetrino();
+    if (evt.key == Key::W) {
+        _tetrisGame.rotateTetrino();
     }
 }
 
 void MyKeyListener::onKeyRepeat(KeyEvent evt) {
     if (evt.key == Key::D) {
-        TetrisGame_.moveRight();
+        _tetrisGame.moveRight();
     }
     if (evt.key == Key::A) {
-        TetrisGame_.moveLeft();
+        _tetrisGame.moveLeft();
     }
     if (evt.key == Key::S) {
-        TetrisGame_.moveDown();
+        _tetrisGame.moveDown();
     }
 }
 
