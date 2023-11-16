@@ -5,8 +5,6 @@
 
 using namespace threepp;
 
-//int size = game
-//grid
 
 TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({Shapes::T, {0, 10, 0}, Color::orange}) {
 
@@ -33,20 +31,59 @@ std::shared_ptr<Group> TetrisGame::getTetrinoGroup() {
 
 // controls for MyKeyListener
 void TetrisGame::moveLeft() {
+    auto positions = _current_tetrino.getPositions();
+
+    for (auto pos : positions) {
+        if (pos.x >= 6) {
+            return;
+        }
+    }
+
+    for (auto pos : positions) {
+        _boardGrid.at(pos.x).at(pos.y) = false;         // removes the positions from the grid array
+    }
+
     if (_current_tetrino.getGroup()->position.x > -6) {
         _current_tetrino.getGroup()->position.x -= 1;
     }
 }
+
 void TetrisGame::moveRight() {
+    auto positions = _current_tetrino.getPositions();
+
+    for (auto pos : positions) {
+        if (pos.x >= 6) {
+            return;
+        }
+    }
+
+    for (auto pos : positions) {
+        _boardGrid.at(pos.x).at(pos.y) = false;
+    }
+
     if (_current_tetrino.getGroup()->position.x < 6) {
         _current_tetrino.getGroup()->position.x += 1;
     }
 }
+
 void TetrisGame::moveDown() {
+    auto positions = _current_tetrino.getPositions();
+
+    for (auto pos : positions) {
+        if (pos.y <= -9) {
+            return;
+        }
+    }
+
+    for (auto pos : positions) {
+        _boardGrid.at(pos.x).at(pos.y) = false;
+    }
+
     if (_current_tetrino.getGroup()->position.y > -9) {
         _current_tetrino.getGroup()->position.y -= 1;
     }
 }
+
 void TetrisGame::rotateTetrino() {
     _current_tetrino.getGroup()->rotateZ(-3.1415926 / 2); // lag ny kode
 }

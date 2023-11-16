@@ -5,7 +5,7 @@
 using namespace threepp;
 
 // sets the keys to move the tetrinos
-MyKeyListener::MyKeyListener (TetrisGame& tetrisGame): _tetrisGame(tetrisGame) {}
+MyKeyListener::MyKeyListener (TetrisGame &tetrisGame): _tetrisGame(tetrisGame) {}
 
 void MyKeyListener::onKeyPressed(KeyEvent evt) {
     if (evt.key == Key::D) {            // override? Ask!

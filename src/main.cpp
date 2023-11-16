@@ -18,7 +18,7 @@ int main() {
     MyKeyListener l(game);
     sceneHandler.addKeyListener(l);
 
-// adds the boarder in the scene
+// adds the border in the scene
     sceneHandler.getScene()->add(game.getBorderGroup());
     sceneHandler.getScene()->add(game.getTetrinoGroup());
 
