@@ -9,16 +9,15 @@ using namespace threepp;
 TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({Shapes::T, {0, 10, 0}, Color::orange}) {
 
     // lower line
-    for (int i = -8; i < 9; i++) {
-        _borderGroup->add(ThreeppHelper::createBox({static_cast<float>(i), -11, 0}, Color::gray));
+    for (int i = 0; i < 17; i++) {
+        _borderGroup->add(ThreeppHelper::createBox({static_cast<float>(i), 0, 0}, Color::gray));
     }
 
     // side lines
-    for (int i = -10; i < 14; i++) {
-        _borderGroup->add(ThreeppHelper::createBox({8, static_cast<float>(i), 0}, Color::gray));
-        _borderGroup->add(ThreeppHelper::createBox({-8, static_cast<float>(i), 0}, Color::gray));
+    for (int i = 0; i < 24; i++) {
+        _borderGroup->add(ThreeppHelper::createBox({0, static_cast<float>(i), 0}, Color::gray));
+        _borderGroup->add(ThreeppHelper::createBox({17, static_cast<float>(i), 0}, Color::gray));
     }
-
 }
 
 std::shared_ptr<Group> TetrisGame::getBorderGroup() {
@@ -34,7 +33,7 @@ void TetrisGame::moveLeft() {
     auto positions = _current_tetrino.getPositions();
 
     for (auto pos : positions) {
-        if (pos.x >= 6) {
+        if (pos.x <= 0) {
             return;
         }
     }
@@ -43,7 +42,7 @@ void TetrisGame::moveLeft() {
         _boardGrid.at(pos.x).at(pos.y) = false;         // removes the positions from the grid array
     }
 
-    if (_current_tetrino.getGroup()->position.x > -6) {
+    if (_current_tetrino.getGroup()->position.x > 1) {
         _current_tetrino.getGroup()->position.x -= 1;
     }
 }
@@ -52,7 +51,7 @@ void TetrisGame::moveRight() {
     auto positions = _current_tetrino.getPositions();
 
     for (auto pos : positions) {
-        if (pos.x >= 6) {
+        if (pos.x >= 16) {
             return;
         }
     }
@@ -61,7 +60,7 @@ void TetrisGame::moveRight() {
         _boardGrid.at(pos.x).at(pos.y) = false;
     }
 
-    if (_current_tetrino.getGroup()->position.x < 6) {
+    if (_current_tetrino.getGroup()->position.x < 16) {
         _current_tetrino.getGroup()->position.x += 1;
     }
 }
@@ -70,13 +69,13 @@ void TetrisGame::moveDown() {
     auto positions = _current_tetrino.getPositions();
 
     for (auto pos : positions) {
-        if (pos.y <= -9) {
+        if (pos.y <= 1) {
             return;
         }
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.x).at(pos.y) = false;
+        _boardGrid.at(pos.y).at(pos.x) = false;
     }
 
     if (_current_tetrino.getGroup()->position.y > -9) {
@@ -85,7 +84,9 @@ void TetrisGame::moveDown() {
 }
 
 void TetrisGame::rotateTetrino() {
-    _current_tetrino.getGroup()->rotateZ(-3.1415926 / 2); // lag ny kode
+    //_current_tetrino.getGroup()->rotateZ(-3.1415926 / 2); // lag ny kode
+
+
 }
 
 

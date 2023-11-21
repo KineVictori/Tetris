@@ -19,7 +19,7 @@ TetrisScene::TetrisScene()
     _renderer.setClearColor(0x183f3e); // use 0x for # in hex
 
     // sets the camera position
-    _camera->position.z = 30;
+    _camera->position.set(8, 10, 30);
     _camera->aspect = _canvas.size().aspect();
     _camera->updateProjectionMatrix();
     _renderer.setSize(_canvas.size());
@@ -57,17 +57,17 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
         //l.setDeltaTime(dt);
 
         _renderer.render(*_scene, *_camera);
-        _renderer.resetState(); // needed when using TextRenderer
+        _renderer.resetState();                 // needed when using TextRenderer
         _textRenderer.render();
 
         iterations++;
 
         if (iterations % 60 == 0) {
-            if (game.getTetrinoGroup()->position.y > -9) {
+            if (game.getTetrinoGroup()->position.y > (-21)) {
                 game.getTetrinoGroup()->position.add(Vector3(0, -1, 0));
             }
         }
 
-        _textHandles.at(0)->setText("Points: " + std::to_string(iterations));
+        _textHandles.at(0)->setText("Points: " + std::to_string(iterations) + " | Pos: " + std::to_string(game.getTetrinoGroup()->position.y));
     });
 }
