@@ -141,27 +141,29 @@ void TetrisGame::rotateI() {
             newPos.at(2) = {pos2.x, pos2.y + 1, 0};
             newPos.at(3) = {pos3.x - 1, pos3.y + 2, 0};
 
-            //fortsett sånn med alle boksene, og så med alle casene
+            _current_tetrino.setOrientation(Orientation::RIGHT);
 
         } break;
 
         case RIGHT: {
             auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.x).at(pos0.x) = false;
-            _boardGrid.at(pos0.x - 1).at(pos0.x + 1) = true;
+            _boardGrid.at(pos0.y).at(pos0.x) = false;
+            _boardGrid.at(pos0.y + 1).at(pos0.x - 1) = true;
 
             auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.x).at(pos2.x) = false;
-            _boardGrid.at(pos2.x + 1).at(pos2.x - 1) = true;
+            _boardGrid.at(pos2.y).at(pos2.x) = false;
+            _boardGrid.at(pos2.y - 1).at(pos2.x + 1) = true;
 
             auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.x).at(pos3.x) = false;
-            _boardGrid.at(pos3.x + 2).at(pos3.x - 2) = true;
+            _boardGrid.at(pos3.y).at(pos3.x) = false;
+            _boardGrid.at(pos3.y - 2).at(pos3.x + 2) = true;
 
-            newPos.at(0) = {pos0.x + 1, pos0.y - 1, 0};
+            newPos.at(0) = {pos0.x - 1, pos0.y + 1, 0};
             newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x - 1, pos2.y + 1, 0};
-            newPos.at(3) = {pos3.x - 2, pos3.y + 2, 0};
+            newPos.at(2) = {pos2.x + 1, pos2.y - 1, 0};
+            newPos.at(3) = {pos3.x + 2, pos3.y - 2, 0};
+
+            _current_tetrino.setOrientation(Orientation::DOWN);
 
         } break;
 
@@ -183,12 +185,14 @@ void TetrisGame::rotateI() {
             newPos.at(2) = {positions.at(2).x, positions.at(2).y, 0};
             newPos.at(3) = {pos3.x + 1, pos3.y + 1, 0};
 
+            _current_tetrino.setOrientation(Orientation::LEFT);
+
         } break;
 
         case LEFT:{
             auto pos0 = positions.at(0);
             _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 1).at(pos0.x + 2) = true;
+            _boardGrid.at(pos0.y + 2).at(pos0.x + 1) = true;
 
             auto pos1 = positions.at(1);
             _boardGrid.at(pos1.y).at(pos1.x) = false;
@@ -196,16 +200,18 @@ void TetrisGame::rotateI() {
 
             auto pos2 = positions.at(2);
             _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y - 1).at(pos2.x + 1) = true;
+            _boardGrid.at(pos2.y).at(pos2.x - 1) = true;
 
             auto pos3 = positions.at(3);
             _boardGrid.at(pos3.y).at(pos3.x) = false;
             _boardGrid.at(pos3.y - 1).at(pos3.x - 2) = true;
 
-            newPos.at(0) = {pos0.x + 2, pos0.y + 1, 0};
+            newPos.at(0) = {pos0.x + 1, pos0.y + 2, 0};
             newPos.at(1) = {pos1.x, pos1.y + 1, 0};
-            newPos.at(2) = {pos2.x + 1, pos2.y - 1, 0};
+            newPos.at(2) = {pos2.x - 1, pos2.y, 0};
             newPos.at(3) = {pos3.x - 2, pos3.y - 1, 0};
+
+            _current_tetrino.setOrientation(Orientation::UP);
 
         } break;
     }

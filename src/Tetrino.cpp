@@ -114,6 +114,10 @@ Orientation Tetrino::getOrientation() {
     return _orientation;
 }
 
+void Tetrino::setOrientation(Orientation orientation) {
+    _orientation = orientation;
+}
+
 void Tetrino::setPositions(std::array<Vector3, 4> newPos) {
     position0 = newPos.at(0);
     position1 = newPos.at(1);

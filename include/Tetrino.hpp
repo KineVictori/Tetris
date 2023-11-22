@@ -17,6 +17,7 @@ public:
     void setPositions(std::array<Vector3, 4> newPos);
     std::array<Vector3, 4> getPositions();
     Shapes getShape();
+    void setOrientation(Orientation orientation);
     Orientation getOrientation();
     void updateGroup();
 
