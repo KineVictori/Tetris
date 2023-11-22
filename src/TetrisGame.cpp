@@ -8,7 +8,7 @@
 using namespace threepp;
 
                                                                             //randomTetrino()
-TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino(Shapes::L, {0, 10, 0}, Color::orange) {
+TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino(Shapes::J, {0, 10, 0}, Color::orange) {
 
     // lower line
     for (int i = 0; i < 17; i++) {
@@ -35,7 +35,7 @@ void TetrisGame::moveLeft() {
     auto positions = _current_tetrino.getPositions();
 
     for (auto pos : positions) {
-        if (pos.x <= 0) {
+        if (pos.x <= 1) {
             return;
         }
     }
@@ -107,7 +107,6 @@ void TetrisGame::moveDown() {
 }
 
 void TetrisGame::rotateTetrino() {
-    //_current_tetrino.getGroup()->rotateZ(-3.1415926 / 2); // lag ny kode
 
     switch (_current_tetrino.getShape()) {
         case I: {
@@ -134,6 +133,17 @@ void TetrisGame::rotateTetrino() {
             rotateT();
         } break;
     }
+
+//    for (int ix = 0; ix < 4; ix++)
+//    {
+//        auto pos = positions.at(ix);
+//        auto off = offsets.at(ix);
+//
+//        _boardGrid.at(pos.y).at(pos.x) = false;
+//        _boardGrid.at(pos.y + off.y).at(pos.x + off.x) = true;
+//
+//        newPos.at(ix) = {pos.x + off.x, pos.y + off.y, 0};
+//    }
 }
 
 void TetrisGame::rotateI() {
@@ -141,103 +151,59 @@ void TetrisGame::rotateI() {
     auto orientation = _current_tetrino.getOrientation();
 
     std::array<Vector3, 4> newPos;
+    std::array<Vector2, 4> offsets;
+
     switch (orientation) {
 
         case UP: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y - 1 ).at(pos0.x + 2) = true;
-
-            auto pos1 = positions.at(1);
-            _boardGrid.at(pos1.y).at(pos1.x) = false;
-            _boardGrid.at(pos1.y).at(pos1.x + 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y + 1).at(pos2.x) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y + 2).at(pos3.x - 1) = true;
-
-            newPos.at(0) = {pos0.x + 2, pos0.y - 1, 0};
-            newPos.at(1) = {pos1.x + 1, pos1.y, 0};
-            newPos.at(2) = {pos2.x, pos2.y + 1, 0};
-            newPos.at(3) = {pos3.x - 1, pos3.y + 2, 0};
+            offsets.at(0) = {2, -1};
+            offsets.at(1) = {1, 0};
+            offsets.at(2) = {0, 1};
+            offsets.at(3) = {-1, 2};
 
             _current_tetrino.setOrientation(Orientation::RIGHT);
 
         } break;
 
         case RIGHT: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 1).at(pos0.x - 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y - 1).at(pos2.x + 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y - 2).at(pos3.x + 2) = true;
-
-            newPos.at(0) = {pos0.x - 1, pos0.y + 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x + 1, pos2.y - 1, 0};
-            newPos.at(3) = {pos3.x + 2, pos3.y - 2, 0};
+            offsets.at(0) = {-1, 1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {1, -1};
+            offsets.at(3) = {2, -2};
 
             _current_tetrino.setOrientation(Orientation::DOWN);
 
         } break;
 
         case DOWN: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y - 2).at(pos0.x - 2) = true;
-
-            auto pos1 = positions.at(1);
-            _boardGrid.at(pos1.y).at(pos1.x) = false;
-            _boardGrid.at(pos1.y - 1).at(pos1.x - 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y + 1).at(pos3.x + 1) = true;
-
-            newPos.at(0) = {pos0.x - 2, pos0.y - 2, 0};
-            newPos.at(1) = {pos1.x - 1, pos1.y - 1, 0};
-            newPos.at(2) = {positions.at(2).x, positions.at(2).y, 0};
-            newPos.at(3) = {pos3.x + 1, pos3.y + 1, 0};
+            offsets.at(0) = {-2, -2};
+            offsets.at(1) = {-1, -1};
+            offsets.at(2) = {0, 0};
+            offsets.at(3) = {1, 1};
 
             _current_tetrino.setOrientation(Orientation::LEFT);
 
         } break;
 
         case LEFT:{
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 2).at(pos0.x + 1) = true;
-
-            auto pos1 = positions.at(1);
-            _boardGrid.at(pos1.y).at(pos1.x) = false;
-            _boardGrid.at(pos1.y + 1).at(pos1.x) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y).at(pos2.x - 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y - 1).at(pos3.x - 2) = true;
-
-            newPos.at(0) = {pos0.x + 1, pos0.y + 2, 0};
-            newPos.at(1) = {pos1.x, pos1.y + 1, 0};
-            newPos.at(2) = {pos2.x - 1, pos2.y, 0};
-            newPos.at(3) = {pos3.x - 2, pos3.y - 1, 0};
+            offsets.at(0) = {1, 2};
+            offsets.at(1) = {0, 1};
+            offsets.at(2) = {-1, 0};
+            offsets.at(3) = {-2, -1};
 
             _current_tetrino.setOrientation(Orientation::UP);
 
         } break;
+    }
+    for (int ix = 0; ix < 4; ix++)
+    {
+        auto pos = positions.at(ix);
+        auto off = offsets.at(ix);
+
+        _boardGrid.at(pos.y).at(pos.x) = false;
+        _boardGrid.at(pos.y + off.y).at(pos.x + off.x) = true;
+
+        newPos.at(ix) = {pos.x + off.x, pos.y + off.y, 0};
     }
 
     _current_tetrino.setPositions(newPos);
@@ -249,96 +215,59 @@ void TetrisGame::rotateJ() {
     auto orientation = _current_tetrino.getOrientation();
 
     std::array<Vector3, 4> newPos;
+    std::array<Vector2, 4> offsets;
+
     switch (orientation) {
 
         case UP: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y - 1).at(pos0.x + 1) = true;
-
-            auto pos1 = positions.at(1);
-            _boardGrid.at(pos1.y).at(pos1.x) = false;
-            _boardGrid.at(pos1.y).at(pos1.x) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y + 1).at(pos2.x - 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y + 2).at(pos3.x) = true;
-
-            newPos.at(0) = {pos0.x + 1, pos0.y - 1, 0};
-            newPos.at(1) = {pos1.x, pos1.y, 0};
-            newPos.at(2) = {pos2.x - 1, pos2.y + 1, 0};
-            newPos.at(3) = {pos3.x, pos3.y + 2, 0};
+            offsets.at(0) = {1, -1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {-1, 1};
+            offsets.at(3) = {0, 2};
 
             _current_tetrino.setOrientation(Orientation::RIGHT);
 
         } break;
 
         case RIGHT: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y - 1).at(pos0.x - 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y + 1).at(pos2.x + 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y).at(pos3.x + 2) = true;
-
-            newPos.at(0) = {pos0.x - 1, pos0.y - 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x + 1, pos2.y + 1, 0};
-            newPos.at(3) = {pos3.x + 2, pos3.y, 0};
+            offsets.at(0) = {-1, -1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {1, 1};
+            offsets.at(3) = {2, 0};
 
             _current_tetrino.setOrientation(Orientation::DOWN);
+
         } break;
 
         case DOWN: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 1).at(pos0.x - 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y - 1).at(pos2.x + 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y - 2).at(pos3.x) = true;
-
-            newPos.at(0) = {pos0.x - 1, pos0.y + 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x + 1, pos2.y - 1, 0};
-            newPos.at(3) = {pos3.x, pos3.y - 2, 0};
+            offsets.at(0) = {-1, 1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {1, -1};
+            offsets.at(3) = {0, -2};
 
             _current_tetrino.setOrientation(Orientation::LEFT);
+
         } break;
 
         case LEFT: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 1).at(pos0.x + 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y - 1).at(pos2.x - 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y).at(pos3.x - 2) = true;
-
-            newPos.at(0) = {pos0.x + 1, pos0.y + 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x - 1, pos2.y - 1, 0};
-            newPos.at(3) = {pos3.x - 2, pos3.y, 0};
+            offsets.at(0) = {1, 1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {-1, -1};
+            offsets.at(3) = {-2, 0};
 
             _current_tetrino.setOrientation(Orientation::UP);
+
         } break;
+    }
+    for (int ix = 0; ix < 4; ix++)
+    {
+        auto pos = positions.at(ix);
+        auto off = offsets.at(ix);
+
+        _boardGrid.at(pos.y).at(pos.x) = false;
+        _boardGrid.at(pos.y + off.y).at(pos.x + off.x) = true;
+
+        newPos.at(ix) = {pos.x + off.x, pos.y + off.y, 0};
     }
 
     _current_tetrino.setPositions(newPos);
@@ -350,96 +279,59 @@ void TetrisGame::rotateL() {
     auto orientation = _current_tetrino.getOrientation();
 
     std::array<Vector3, 4> newPos;
+    std::array<Vector2, 4> offsets;
+
     switch (orientation) {
 
         case UP: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y - 1).at(pos0.x + 1) = true;
-
-            auto pos1 = positions.at(1);
-            _boardGrid.at(pos1.y).at(pos1.x) = false;
-            _boardGrid.at(pos1.y).at(pos1.x) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y + 1).at(pos2.x - 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y).at(pos3.x - 2) = true;
-
-            newPos.at(0) = {pos0.x + 1, pos0.y - 1, 0};
-            newPos.at(1) = {pos1.x, pos1.y, 0};
-            newPos.at(2) = {pos2.x - 1, pos2.y + 1, 0};
-            newPos.at(3) = {pos3.x - 2, pos3.y, 0};
+            offsets.at(0) = {1, -1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {-1, 1};
+            offsets.at(3) = {-2, 0};
 
             _current_tetrino.setOrientation(Orientation::RIGHT);
 
         } break;
 
         case RIGHT: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y - 1).at(pos0.x - 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y + 1).at(pos2.x + 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y + 2).at(pos3.x) = true;
-
-            newPos.at(0) = {pos0.x - 1, pos0.y - 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x + 1, pos2.y + 1, 0};
-            newPos.at(3) = {pos3.x, pos3.y + 2, 0};
+            offsets.at(0) = {-1, -1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {1, 1};
+            offsets.at(3) = {0, 2};
 
             _current_tetrino.setOrientation(Orientation::DOWN);
+
         } break;
 
         case DOWN: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 1).at(pos0.x - 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y - 1).at(pos2.x + 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y).at(pos3.x + 2) = true;
-
-            newPos.at(0) = {pos0.x - 1, pos0.y + 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x + 1, pos2.y - 1, 0};
-            newPos.at(3) = {pos3.x + 2, pos3.y, 0};
+            offsets.at(0) = {-1, 1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {1, -1};
+            offsets.at(3) = {2, 0};
 
             _current_tetrino.setOrientation(Orientation::LEFT);
+
         } break;
 
         case LEFT: {
-            auto pos0 = positions.at(0);
-            _boardGrid.at(pos0.y).at(pos0.x) = false;
-            _boardGrid.at(pos0.y + 1).at(pos0.x + 1) = true;
-
-            auto pos2 = positions.at(2);
-            _boardGrid.at(pos2.y).at(pos2.x) = false;
-            _boardGrid.at(pos2.y - 1).at(pos2.x - 1) = true;
-
-            auto pos3 = positions.at(3);
-            _boardGrid.at(pos3.y).at(pos3.x) = false;
-            _boardGrid.at(pos3.y - 2).at(pos3.x) = true;
-
-            newPos.at(0) = {pos0.x + 1, pos0.y + 1, 0};
-            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
-            newPos.at(2) = {pos2.x - 1, pos2.y - 1, 0};
-            newPos.at(3) = {pos3.x, pos3.y - 2, 0};
+            offsets.at(0) = {1, 1};
+            offsets.at(1) = {0, 0};
+            offsets.at(2) = {-1, -1};
+            offsets.at(3) = {0, -2};
 
             _current_tetrino.setOrientation(Orientation::UP);
+
         } break;
+    }
+    for (int ix = 0; ix < 4; ix++)
+    {
+        auto pos = positions.at(ix);
+        auto off = offsets.at(ix);
+
+        _boardGrid.at(pos.y).at(pos.x) = false;
+        _boardGrid.at(pos.y + off.y).at(pos.x + off.x) = true;
+
+        newPos.at(ix) = {pos.x + off.x, pos.y + off.y, 0};
     }
 
     _current_tetrino.setPositions(newPos);
