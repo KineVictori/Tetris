@@ -19,8 +19,15 @@ public:
     void moveLeft();
     void moveRight();
     void moveDown();
-    void rotateTetrino();
+
     void rotateI();
+    void rotateJ();
+    void rotateL();
+    void rotateS();
+    void rotateZ();
+    void rotateT();
+
+    void rotateTetrino();
     Tetrino randomTetrino();
 
 private:
@@ -29,7 +36,6 @@ private:
 
     std::array<std::array<bool, 17>, 24> _boardGrid = {false};
 
-    //int gridSize_{};
 };
 
 

@@ -57,7 +57,7 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
         auto dt = _clock.getDelta();
         //l.setDeltaTime(dt);
 
-
+// noe skulle her ... husker ikke
 
         _renderer.render(*_scene, *_camera);
         _renderer.resetState();                 // needed when using TextRenderer
