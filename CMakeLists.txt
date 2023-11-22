@@ -7,30 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(threepp CONFIG REQUIRED)
 
-set(
-        headers
-        include/MyKeyListener.hpp
-        include/Tetrino.hpp
-        include/ThreeppHelper.hpp
-        include/TetrinoEnum.hpp
-        include/TetrisGame.hpp
-        include/TetrisScene.hpp
-)
-
-set(
-        sources
-        src/main.cpp
-        src/MyKeyListener.cpp
-        src/Tetrino.cpp
-        src/ThreeppHelper.cpp
-        src/TetrisGame.cpp
-        src/TetrisScene.cpp
-)
-
-add_executable(tetris ${sources} ${headers})
-
-target_include_directories(tetris PUBLIC include)
-target_link_libraries(tetris PRIVATE threepp::threepp)
+add_subdirectory(src)
+add_subdirectory(main)
 
 
 # ============================
