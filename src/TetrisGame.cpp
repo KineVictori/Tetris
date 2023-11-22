@@ -2,12 +2,13 @@
 #include "TetrisGame.hpp"
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
-#include <iostream>
+#include <random>
+
 
 using namespace threepp;
 
 
-TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({Shapes::I, {0, 10, 0}, Color::orange}) {
+TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino(randomTetrino()) {
 
     // lower line
     for (int i = 0; i < 17; i++) {
@@ -220,27 +221,12 @@ void TetrisGame::rotateI() {
     _current_tetrino.updateGroup();
 }
 
-//explicit TetrisGame(int gridSize)
-//    : gridSize_(gridSize),
-//      snake_(gridSize / 2, gridSize / 2) {
-//
-//    reset();
-//}
-//
-//[[nodiscard]] int gridSize() const {
-//    return gridSize_;
-//}
-//
-//if (checkBorderCollision(nextMove) || snake_.checkSelfCollision(nextMove)) {
-//    running_ = false;
-//    return;
-//}
-//
-//// check border collision
-//[[nodiscard]] bool checkBorderCollision(const Vector2& pos) const {
-//    auto size = static_cast<float>(gridSize_);
-//    if (pos.x < 0 || pos.x >= size) return true;
-//    if (pos.y < 0 || pos.y >= size) return true;
-//
-//    return false;
-//}
+Tetrino TetrisGame::randomTetrino() {
+    std::random_device dev;
+    std::mt19937_64 rng(dev());
+    std::uniform_int_distribution<std::mt19937_64::result_type> random(0, 6);
+
+    auto shape = static_cast<Shapes> (random(rng));
+
+    return {shape, {0, 10, 0}, Color::orange};
+}

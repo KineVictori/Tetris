@@ -21,6 +21,7 @@ public:
     void moveDown();
     void rotateTetrino();
     void rotateI();
+    Tetrino randomTetrino();
 
 private:
     std::shared_ptr<Group> _borderGroup;
