@@ -12,4 +12,11 @@ enum Shapes {
     T = 6
 };
 
+enum Orientation {
+    UP = 0,
+    RIGHT = 1,
+    DOWN = 2,
+    LEFT = 3
+};
+
 #endif//EXAM_TETRIS_TETRINOENUM_HPP

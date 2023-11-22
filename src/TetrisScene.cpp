@@ -1,8 +1,9 @@
 
 #include "TetrisScene.hpp"
-#include <threepp/threepp.hpp>
-#include "TetrisGame.hpp"
 #include "MyKeyListener.hpp"
+#include "TetrisGame.hpp"
+#include <iostream>
+#include <threepp/threepp.hpp>
 
 using namespace threepp;
 
@@ -56,6 +57,8 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
         auto dt = _clock.getDelta();
         //l.setDeltaTime(dt);
 
+
+
         _renderer.render(*_scene, *_camera);
         _renderer.resetState();                 // needed when using TextRenderer
         _textRenderer.render();
@@ -64,7 +67,7 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
 
         if (iterations % 60 == 0) {
             if (game.getTetrinoGroup()->position.y > (-21)) {
-                game.getTetrinoGroup()->position.add(Vector3(0, -1, 0));
+                game.moveDown();
             }
         }
 

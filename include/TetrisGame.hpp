@@ -20,12 +20,13 @@ public:
     void moveRight();
     void moveDown();
     void rotateTetrino();
+    void rotateI();
 
 private:
     std::shared_ptr<Group> _borderGroup;
     Tetrino _current_tetrino;
 
-    std::array<std::array<bool, 8>, 24> _boardGrid = {false};
+    std::array<std::array<bool, 17>, 24> _boardGrid = {false};
 
     //int gridSize_{};
 };

@@ -2,11 +2,12 @@
 #include "TetrisGame.hpp"
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
+#include <iostream>
 
 using namespace threepp;
 
 
-TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({Shapes::T, {0, 10, 0}, Color::orange}) {
+TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino({Shapes::I, {0, 10, 0}, Color::orange}) {
 
     // lower line
     for (int i = 0; i < 17; i++) {
@@ -45,7 +46,7 @@ void TetrisGame::moveLeft() {
     if (_current_tetrino.getGroup()->position.x > 1) {
         _current_tetrino.getGroup()->position.x -= 1;
     }
-}
+}       // endre på samme måte som down
 
 void TetrisGame::moveRight() {
     auto positions = _current_tetrino.getPositions();
@@ -76,19 +77,142 @@ void TetrisGame::moveDown() {
 
     for (auto pos : positions) {
         _boardGrid.at(pos.y).at(pos.x) = false;
+        _boardGrid.at(pos.y - 1).at(pos.x) = true;
     }
 
-    if (_current_tetrino.getGroup()->position.y > -9) {
-        _current_tetrino.getGroup()->position.y -= 1;
+    std::array<Vector3, 4> newPos;
+    for (int i = 0; i < 4; i++) {
+        auto tmp = positions.at(i);
+        tmp.y -= 1;
+        newPos.at(i) = tmp;
     }
+
+    _current_tetrino.setPositions(newPos);
+    _current_tetrino.updateGroup();
 }
 
 void TetrisGame::rotateTetrino() {
     //_current_tetrino.getGroup()->rotateZ(-3.1415926 / 2); // lag ny kode
 
+    switch (_current_tetrino.getShape()) {
+        case I: {
+            rotateI();
+        } break;
 
+        case J:
+            break;
+        case L:
+            break;
+        case S:
+            break;
+        case Z:
+            break;
+        case T:
+            break;
+    }
 }
 
+void TetrisGame::rotateI() {
+    auto positions = _current_tetrino.getPositions();
+    auto orientation = _current_tetrino.getOrientation();
+
+    std::array<Vector3, 4> newPos;
+    switch (orientation) {
+
+        case UP: {
+            auto pos0 = positions.at(0);
+            _boardGrid.at(pos0.y).at(pos0.x) = false;
+            _boardGrid.at(pos0.y -1 ).at(pos0.x + 2) = true;
+
+            auto pos1 = positions.at(1);
+            _boardGrid.at(pos1.y).at(pos1.x) = false;
+            _boardGrid.at(pos1.y).at(pos1.x + 1) = true;
+
+            auto pos2 = positions.at(2);
+            _boardGrid.at(pos2.y).at(pos2.x) = false;
+            _boardGrid.at(pos2.y + 1).at(pos2.x) = true;
+
+            auto pos3 = positions.at(3);
+            _boardGrid.at(pos3.y).at(pos3.x) = false;
+            _boardGrid.at(pos3.y + 2).at(pos3.x - 1) = true;
+
+            newPos.at(0) = {pos0.x + 2, pos0.y - 1, 0};
+            newPos.at(1) = {pos1.x + 1, pos1.y, 0};
+            newPos.at(2) = {pos2.x, pos2.y + 1, 0};
+            newPos.at(3) = {pos3.x - 1, pos3.y + 2, 0};
+
+            //fortsett sånn med alle boksene, og så med alle casene
+
+        } break;
+
+        case RIGHT: {
+            auto pos0 = positions.at(0);
+            _boardGrid.at(pos0.x).at(pos0.x) = false;
+            _boardGrid.at(pos0.x - 1).at(pos0.x + 1) = true;
+
+            auto pos2 = positions.at(2);
+            _boardGrid.at(pos2.x).at(pos2.x) = false;
+            _boardGrid.at(pos2.x + 1).at(pos2.x - 1) = true;
+
+            auto pos3 = positions.at(3);
+            _boardGrid.at(pos3.x).at(pos3.x) = false;
+            _boardGrid.at(pos3.x + 2).at(pos3.x - 2) = true;
+
+            newPos.at(0) = {pos0.x + 1, pos0.y - 1, 0};
+            newPos.at(1) = {positions.at(1).x, positions.at(1).y, 0};
+            newPos.at(2) = {pos2.x - 1, pos2.y + 1, 0};
+            newPos.at(3) = {pos3.x - 2, pos3.y + 2, 0};
+
+        } break;
+
+        case DOWN: {
+            auto pos0 = positions.at(0);
+            _boardGrid.at(pos0.y).at(pos0.x) = false;
+            _boardGrid.at(pos0.y - 2).at(pos0.x - 2) = true;
+
+            auto pos1 = positions.at(1);
+            _boardGrid.at(pos1.y).at(pos1.x) = false;
+            _boardGrid.at(pos1.y - 1).at(pos1.x - 1) = true;
+
+            auto pos3 = positions.at(3);
+            _boardGrid.at(pos3.y).at(pos3.x) = false;
+            _boardGrid.at(pos3.y + 1).at(pos3.x + 1) = true;
+
+            newPos.at(0) = {pos0.x - 2, pos0.y - 2, 0};
+            newPos.at(1) = {pos1.x - 1, pos1.y - 1, 0};
+            newPos.at(2) = {positions.at(2).x, positions.at(2).y, 0};
+            newPos.at(3) = {pos3.x + 1, pos3.y + 1, 0};
+
+        } break;
+
+        case LEFT:{
+            auto pos0 = positions.at(0);
+            _boardGrid.at(pos0.y).at(pos0.x) = false;
+            _boardGrid.at(pos0.y + 1).at(pos0.x + 2) = true;
+
+            auto pos1 = positions.at(1);
+            _boardGrid.at(pos1.y).at(pos1.x) = false;
+            _boardGrid.at(pos1.y + 1).at(pos1.x) = true;
+
+            auto pos2 = positions.at(2);
+            _boardGrid.at(pos2.y).at(pos2.x) = false;
+            _boardGrid.at(pos2.y - 1).at(pos2.x + 1) = true;
+
+            auto pos3 = positions.at(3);
+            _boardGrid.at(pos3.y).at(pos3.x) = false;
+            _boardGrid.at(pos3.y - 1).at(pos3.x - 2) = true;
+
+            newPos.at(0) = {pos0.x + 2, pos0.y + 1, 0};
+            newPos.at(1) = {pos1.x, pos1.y + 1, 0};
+            newPos.at(2) = {pos2.x + 1, pos2.y - 1, 0};
+            newPos.at(3) = {pos3.x - 2, pos3.y - 1, 0};
+
+        } break;
+    }
+
+    _current_tetrino.setPositions(newPos);
+    _current_tetrino.updateGroup();
+}
 
 //explicit TetrisGame(int gridSize)
 //    : gridSize_(gridSize),
