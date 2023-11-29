@@ -2,9 +2,9 @@
 #ifndef EXAM_TETRIS_TETRISGAME_HPP
 #define EXAM_TETRIS_TETRISGAME_HPP
 
-#include <threepp/threepp.hpp>
-#include "TetrinoEnum.hpp"
+#include "Enums.hpp"
 #include "Tetrino.hpp"
+#include <threepp/threepp.hpp>
 
 using namespace threepp;
 
@@ -20,12 +20,12 @@ public:
     void moveRight();
     void moveDown();
 
-    void rotateI();
-    void rotateJ();
-    void rotateL();
-    void rotateS();
-    void rotateZ();
-    void rotateT();
+    void rotateI(Orientation orientation, std::array<Vector2, 4> &offsets);
+    void rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets);
+    void rotateL(Orientation orientation, std::array<Vector2, 4> &offsets);
+    void rotateS(Orientation orientation, std::array<Vector2, 4> &offsets);
+    void rotateZ(Orientation orientation, std::array<Vector2, 4> &offsets);
+    void rotateT(Orientation orientation, std::array<Vector2, 4> &offsets);
 
     void rotateTetrino();
     Tetrino randomTetrino();

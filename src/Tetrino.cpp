@@ -1,9 +1,9 @@
 
 #include "Tetrino.hpp"
-#include <threepp/threepp.hpp>
-#include <array>
+#include "Enums.hpp"
 #include "ThreeppHelper.hpp"
-#include "TetrinoEnum.hpp"
+#include <array>
+#include <threepp/threepp.hpp>
 
 using namespace threepp;
 
@@ -44,8 +44,8 @@ Tetrino::Tetrino(Shapes shape, const threepp::Vector3& pos, const threepp::Color
 
         case Shapes::S: {
 
-            position0 = {9, 23, 0};
-            position1 = {10, 23, 0};
+            position0 = {10, 23, 0};
+            position1 = {9, 23, 0};
             position2 = {9, 22, 0};
             position3 = {8, 22, 0};
 
@@ -53,8 +53,8 @@ Tetrino::Tetrino(Shapes shape, const threepp::Vector3& pos, const threepp::Color
 
         case Shapes::Z: {
 
-            position0 = {9, 23, 0};
-            position1 = {8, 23, 0};
+            position0 = {8, 23, 0};
+            position1 = {9, 23, 0};
             position2 = {9, 22, 0};
             position3 = {10, 22, 0};
 
@@ -71,10 +71,10 @@ Tetrino::Tetrino(Shapes shape, const threepp::Vector3& pos, const threepp::Color
 
         case Shapes::T: {
 
-            position0 = {9, 23, 0};
-            position1 = {9, 22, 0};
-            position2 = {10, 23, 0};
-            position3 = {8, 23, 0};
+            position0 = {9, 22, 0};
+            position1 = {8, 23, 0};
+            position2 = {9, 23, 0};
+            position3 = {10, 23, 0};
 
         } break;
     }

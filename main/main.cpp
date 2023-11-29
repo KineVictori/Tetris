@@ -18,10 +18,11 @@ int main() {
     MyKeyListener l(game);
     sceneHandler.addKeyListener(l);
 
-// adds the border in the scene
+// adds the border and tetrinos in the scene
     sceneHandler.getScene()->add(game.getBorderGroup());
     sceneHandler.getScene()->add(game.getTetrinoGroup());
 
+    // animates canvas
     sceneHandler.animateCanvas(game);
 }
 
