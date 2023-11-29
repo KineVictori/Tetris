@@ -447,20 +447,19 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
 Tetrino TetrisGame::randomTetrino() {
     std::random_device dev;
     std::mt19937_64 rng(dev());
-    std::uniform_int_distribution<std::mt19937_64::result_type> random(0, 6);
+    std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
 
-    auto shape = static_cast<Shapes> (random(rng));
-    shape = Shapes::I;
+    auto shape = static_cast<Shapes> (randomNumber(rng));
 
-    return {shape, {0, 10, 0}, Color::orange};
+    return {shape, {0, 10, 0}, randomColor()};
 }
 
-//Color TetrisGame::randomColor() {             // fix ???
-//    std::random_device dev;
-//    std::mt19937_64 rng(dev());
-//    std::uniform_int_distribution<std::mt19937_64::result_type> random(0, 6);
-//
-//    color ranColor = static_cast<Shapes> (random(rng));
-//
-//    return ranColor;
-//}
+Color TetrisGame::randomColor() {
+    std::array<Color, 7> colors = {Color::pink, Color::purple, Color::blue, Color::red, Color::yellow, Color::green, Color::orange};
+
+    std::random_device dev;
+    std::mt19937_64 rng(dev());
+    std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
+
+    return colors[randomNumber(rng)];
+}

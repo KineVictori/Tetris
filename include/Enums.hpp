@@ -23,14 +23,4 @@ enum Orientation {
     LEFT = 3
 };
 
-enum Col {
-    Color::pink = 0,
-    Color::purple = 1,
-    Color::blue = 2,
-    Color::green = 3,
-    Color::red = 4,
-    Color::yellow = 5,
-    Color::orange = 6
-};
-
 #endif//EXAM_TETRIS_ENUMS_HPP

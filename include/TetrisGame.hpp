@@ -28,7 +28,8 @@ public:
     void rotateT(Orientation orientation, std::array<Vector2, 4> &offsets);
 
     void rotateTetrino();
-    Tetrino randomTetrino();
+    static Tetrino randomTetrino();
+    static Color randomColor();
 
 private:
     std::shared_ptr<Group> _borderGroup;
