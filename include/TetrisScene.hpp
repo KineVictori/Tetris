@@ -15,16 +15,17 @@ class TetrisScene {
 public:
     TetrisScene();
 
-    std::shared_ptr<Scene> getScene();
+    static std::shared_ptr<Scene> getScene();
     void addKeyListener(MyKeyListener &l);
     void animateCanvas(TetrisGame &game);
+    static void newTetrino(Tetrino passedTetrino);
 
 private:
     Canvas _canvas;
     GLRenderer _renderer;
     TextRenderer _textRenderer;
     std::shared_ptr<PerspectiveCamera> _camera;
-    std::shared_ptr<Scene> _scene;
+    inline static std::shared_ptr<Scene> _scene = Scene::create();
     Clock _clock;
 
     std::vector<TextHandle*> _textHandles;

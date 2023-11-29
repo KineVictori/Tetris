@@ -123,5 +123,4 @@ void Tetrino::setPositions(std::array<Vector3, 4> newPos) {
     position1 = newPos.at(1);
     position2 = newPos.at(2);
     position3 = newPos.at(3);
-
 }

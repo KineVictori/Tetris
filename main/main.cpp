@@ -13,6 +13,8 @@ int main() {
 
 // implements TetrisGame in main
     TetrisGame game{};
+//    game.sceneHandler = &sceneHandler;
+    game.newTetrinoSceneFunction = sceneHandler.newTetrino;
 
 // sets the Tetrino (via TetrisGame) to move with keys
     MyKeyListener l(game);
@@ -20,7 +22,8 @@ int main() {
 
 // adds the border and tetrinos in the scene
     sceneHandler.getScene()->add(game.getBorderGroup());
-    sceneHandler.getScene()->add(game.getTetrinoGroup());
+//    sceneHandler.getScene()->add(game.getTetrinoGroup());
+    sceneHandler.newTetrino(game.getTetrinoCopy());
 
     // animates canvas
     sceneHandler.animateCanvas(game);

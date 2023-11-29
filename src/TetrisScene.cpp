@@ -12,7 +12,7 @@ TetrisScene::TetrisScene()
       _renderer(_canvas.size()),
       _textRenderer(),
       _camera(PerspectiveCamera::create()),
-      _scene(Scene::create()),
+      //_scene(Scene::create()),
       _clock()
 {
     // creates the canvas
@@ -73,4 +73,9 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
 
         _textHandles.at(0)->setText("Points: " + std::to_string(iterations) + " | Pos: " + std::to_string(game.getTetrinoGroup()->position.y));
     });
+}
+
+void TetrisScene::newTetrino(Tetrino passedTetrino) {
+    getScene()->add(passedTetrino.getGroup());
+    std::cout << passedTetrino.getPositions().at(0).y << std::endl;
 }

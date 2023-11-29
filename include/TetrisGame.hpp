@@ -8,6 +8,7 @@
 
 using namespace threepp;
 
+class TetrisScene;
 
 class TetrisGame {
 
@@ -15,6 +16,7 @@ public:
     TetrisGame();
     std::shared_ptr<Group> getBorderGroup ();
     std::shared_ptr<Group> getTetrinoGroup ();
+    Tetrino getTetrinoCopy();
 
     void moveLeft();
     void moveRight();
@@ -30,10 +32,14 @@ public:
     void rotateTetrino();
     static Tetrino randomTetrino();
     static Color randomColor();
+    std::shared_ptr<Group> renderedGroup;
+    TetrisScene *sceneHandler;
+    void (*newTetrinoSceneFunction)(Tetrino);
 
 private:
     std::shared_ptr<Group> _borderGroup;
     Tetrino _current_tetrino;
+
 
     std::array<std::array<bool, 17>, 24> _boardGrid = {false};
 

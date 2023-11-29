@@ -3,12 +3,14 @@
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
 #include <random>
+#include "iostream"
 
 
 using namespace threepp;
 
 
 TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino(randomTetrino()) {
+    renderedGroup = _current_tetrino.getGroup();
 
     // lower line
     for (int i = 0; i < 17; i++) {
@@ -28,6 +30,10 @@ std::shared_ptr<Group> TetrisGame::getBorderGroup() {
 
 std::shared_ptr<Group> TetrisGame::getTetrinoGroup() {
     return _current_tetrino.getGroup();
+}
+
+Tetrino TetrisGame::getTetrinoCopy() {
+    return _current_tetrino;
 }
 
 // controls for MyKeyListener
@@ -96,10 +102,14 @@ void TetrisGame::moveDown() {
 
     for (auto pos : positions) {
         if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
+            std::cout<< "99"<< std::endl;
             for (auto pos : positions) {
                 _boardGrid.at(pos.y).at(pos.x) = true;
             }
             _current_tetrino = randomTetrino();
+//            sceneHandler->getScene()->add(getTetrinoGroup());
+//            renderedGroup = _current_tetrino.getGroup();
+            newTetrinoSceneFunction(_current_tetrino);
             return;
         }
     }
@@ -117,6 +127,8 @@ void TetrisGame::moveDown() {
 
     _current_tetrino.setPositions(newPos);
     _current_tetrino.updateGroup();
+
+    std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
 }
 
 void TetrisGame::rotateTetrino() {
@@ -445,6 +457,7 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
 }
 
 Tetrino TetrisGame::randomTetrino() {
+    // random number generator code copied from ...
     std::random_device dev;
     std::mt19937_64 rng(dev());
     std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
