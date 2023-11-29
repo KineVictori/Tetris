@@ -468,7 +468,7 @@ Tetrino TetrisGame::randomTetrino() {
 }
 
 Color TetrisGame::randomColor() {
-    std::array<Color, 7> colors = {Color::pink, Color::purple, Color::blue, Color::red, Color::yellow, Color::green, Color::orange};
+    std::array<Color, 7> colors = {Color::hotpink, Color::orange, Color::mediumseagreen, Color::deepskyblue, Color::springgreen, Color::blueviolet, Color::gold};
 
     std::random_device dev;
     std::mt19937_64 rng(dev());

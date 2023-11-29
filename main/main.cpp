@@ -22,7 +22,6 @@ int main() {
 
 // adds the border and tetrinos in the scene
     sceneHandler.getScene()->add(game.getBorderGroup());
-//    sceneHandler.getScene()->add(game.getTetrinoGroup());
     sceneHandler.newTetrino(game.getTetrinoCopy());
 
     // animates canvas

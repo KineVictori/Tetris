@@ -12,7 +12,6 @@ TetrisScene::TetrisScene()
       _renderer(_canvas.size()),
       _textRenderer(),
       _camera(PerspectiveCamera::create()),
-      //_scene(Scene::create()),
       _clock()
 {
     // creates the canvas
