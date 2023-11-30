@@ -18,7 +18,7 @@ public:
     static std::shared_ptr<Scene> getScene();
     void addKeyListener(MyKeyListener &l);
     void animateCanvas(TetrisGame &game);
-    static void newTetrino(Tetrino passedTetrino);
+    static void newTetrino(Tetrino pastTetrino);
 
 private:
     Canvas _canvas;

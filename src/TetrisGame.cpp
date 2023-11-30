@@ -47,8 +47,8 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.x).at(pos.y) = false;         // removes the positions from the grid array
-        _boardGrid.at(pos.x - 1).at(pos.y) = true;      // creates new blocks in new position
+        _boardGrid.at(pos.y).at(pos.x) = false;         // removes the positions from the grid array
+        _boardGrid.at(pos.y).at(pos.x - 1) = true;      // creates new blocks in new position
     }
 
     std::array<Vector3, 4> newPos;
@@ -72,8 +72,8 @@ void TetrisGame::moveRight() {
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.x).at(pos.y) = false;
-        _boardGrid.at(pos.x + 1).at(pos.y) = true;
+        _boardGrid.at(pos.y).at(pos.x) = false;
+        _boardGrid.at(pos.y).at(pos.x + 1) = true;
     }
 
     std::array<Vector3, 4> newPos;

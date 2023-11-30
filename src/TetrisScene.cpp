@@ -74,7 +74,7 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
     });
 }
 
-void TetrisScene::newTetrino(Tetrino passedTetrino) {
-    getScene()->add(passedTetrino.getGroup());
-    std::cout << passedTetrino.getPositions().at(0).y << std::endl;
+void TetrisScene::newTetrino(Tetrino pastTetrino) {
+    getScene()->add(pastTetrino.getGroup());
+    std::cout << pastTetrino.getPositions().at(0).y << std::endl;
 }
