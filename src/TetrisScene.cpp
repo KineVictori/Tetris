@@ -59,7 +59,7 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
 // noe skulle her ... husker ikke
 
         _renderer.render(*_scene, *_camera);
-        _renderer.resetState();                 // needed when using TextRenderer
+        _renderer.resetState();                                 // needed when using TextRenderer
         _textRenderer.render();
 
         iterations++;
@@ -76,5 +76,4 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
 
 void TetrisScene::newTetrino(Tetrino pastTetrino) {
     getScene()->add(pastTetrino.getGroup());
-    std::cout << pastTetrino.getPositions().at(0).y << std::endl;
 }

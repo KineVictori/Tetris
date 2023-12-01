@@ -3,7 +3,7 @@
 
 #include "Tetrino.hpp"
 
-TEST_CASE("test tetrino") {
+TEST_CASE("test tetrino crash") {
 
     /* fra eksempel
      std::string firstname = "Per";

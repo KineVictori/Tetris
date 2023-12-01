@@ -48,6 +48,19 @@ void TetrisGame::moveLeft() {
 
     for (auto pos : positions) {
         _boardGrid.at(pos.y).at(pos.x) = false;         // removes the positions from the grid array
+    }
+
+    for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
+        if (_boardGrid.at(pos.y).at(pos.x - 1)) {
+            std::cout<< "55"<< std::endl;
+            for (auto pos : positions) {
+                _boardGrid.at(pos.y).at(pos.x) = true;
+            }
+            return;
+        }
+    }
+
+    for (auto pos : positions) {
         _boardGrid.at(pos.y).at(pos.x - 1) = true;      // creates new blocks in new position
     }
 
@@ -73,6 +86,19 @@ void TetrisGame::moveRight() {
 
     for (auto pos : positions) {
         _boardGrid.at(pos.y).at(pos.x) = false;
+    }
+
+    for (auto pos : positions) {
+        if (_boardGrid.at(pos.y).at(pos.x + 1)) {
+            std::cout<< "95"<< std::endl;
+            for (auto pos : positions) {
+                _boardGrid.at(pos.y).at(pos.x) = true;
+            }
+            return;
+        }
+    }
+
+    for (auto pos : positions) {
         _boardGrid.at(pos.y).at(pos.x + 1) = true;
     }
 
@@ -90,25 +116,17 @@ void TetrisGame::moveRight() {
 void TetrisGame::moveDown() {
     auto positions = _current_tetrino.getPositions();
 
-//    for (auto pos : positions) {
-//        if (pos.y <= 1) {
-//            return;
-//        }
-//    }
-
     for (auto pos : positions) {
         _boardGrid.at(pos.y).at(pos.x) = false;
     }
 
-    for (auto pos : positions) {
+    for (auto pos : positions) {                      // if tetrino crashes downwards, stop it and send new tetrino
         if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
-            std::cout<< "99"<< std::endl;
+            std::cout<< "129"<< std::endl;
             for (auto pos : positions) {
                 _boardGrid.at(pos.y).at(pos.x) = true;
             }
             _current_tetrino = randomTetrino();
-//            sceneHandler->getScene()->add(getTetrinoGroup());
-//            renderedGroup = _current_tetrino.getGroup();
             newTetrinoSceneFunction(_current_tetrino);
             return;
         }
@@ -131,6 +149,7 @@ void TetrisGame::moveDown() {
     std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
 }
 
+// rotation for the different tetrino shapes
 void TetrisGame::rotateTetrino() {
 
     auto positions = _current_tetrino.getPositions();
@@ -456,8 +475,9 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
     }
 }
 
+// random shape and color
 Tetrino TetrisGame::randomTetrino() {
-    // random number generator code copied from ...
+    // random number generator code copied from Cornstalks on StackOverflow
     std::random_device dev;
     std::mt19937_64 rng(dev());
     std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
