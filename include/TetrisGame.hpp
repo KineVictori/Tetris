@@ -32,6 +32,9 @@ public:
     void rotateTetrino();
     static Tetrino randomTetrino();
     static Color randomColor();
+
+    void moveRowDown();
+
     std::shared_ptr<Group> renderedGroup;
     TetrisScene *sceneHandler;
     void (*newTetrinoSceneFunction)(Tetrino);

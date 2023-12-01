@@ -11,9 +11,9 @@ Begynn heller litt på neste mål enn å sette større mål for uka.
 
 
 
-- Kunne markere en full rad som "fullført" og få den vekk
+- Fjerne en full rad, og få alt over ned
 
-Hvis nederste rad er full, tøm, og alt over gå (y - 1)
+Hvis en rad er full, tøm, og alt over gå (y - 1)
 
 - Poeng - litt for å sette tetrino, mer for fullført rad
 

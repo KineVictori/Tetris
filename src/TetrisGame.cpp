@@ -128,6 +128,7 @@ void TetrisGame::moveDown() {
             }
             _current_tetrino = randomTetrino();
             newTetrinoSceneFunction(_current_tetrino);
+            moveRowDown();
             return;
         }
     }
@@ -147,6 +148,7 @@ void TetrisGame::moveDown() {
     _current_tetrino.updateGroup();
 
     std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
+
 }
 
 // rotation for the different tetrino shapes
@@ -478,7 +480,7 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
 // random shape and color
 Tetrino TetrisGame::randomTetrino() {
     // random number generator code copied from Cornstalks on StackOverflow
-    std::random_device dev;
+    std::random_device dev;         // sett alle 3 statisk
     std::mt19937_64 rng(dev());
     std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
 
@@ -495,4 +497,30 @@ Color TetrisGame::randomColor() {
     std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
 
     return colors[randomNumber(rng)];
+}
+void TetrisGame::moveRowDown() {
+
+    int nedersteFulle = -1;
+    for (int i = 0; i < 22; i++) {
+        auto row = _boardGrid.at(i);
+
+        bool full = true;
+        for (int col = 2; col < 15; col++) { // Kanskje 1 og 16, kanskje 17
+            if (! row.at(col)) {full = false;}
+        }
+
+        if (full) {
+            nedersteFulle = i;
+            break;
+        }
+    }
+
+    if (nedersteFulle != -1) {
+        std::cout << "Falling row" << "\n";
+        for (int i = nedersteFulle; i < 20; i++) { // Kankjse 22 eller 23
+            _boardGrid.at(i) = _boardGrid.at(i+1);
+        }
+
+        moveRowDown();
+    }
 }
