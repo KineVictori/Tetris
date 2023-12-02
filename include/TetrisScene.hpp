@@ -15,10 +15,12 @@ class TetrisScene {
 public:
     TetrisScene();
 
+    //void points();
     static std::shared_ptr<Scene> getScene();
     void addKeyListener(MyKeyListener &l);
     void animateCanvas(TetrisGame &game);
-    static void newTetrino(Tetrino pastTetrino);
+    static void newTetrino(Tetrino newTetrino);
+    static void removeTetrino(Tetrino previousTetrino);
 
 private:
     Canvas _canvas;

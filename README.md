@@ -1,4 +1,4 @@
-# Tetris
+# 3D-Tetris
 
 This is a project making the game Tetris that uses `threepp` as a dependency.
 
@@ -11,18 +11,15 @@ Begynn heller litt på neste mål enn å sette større mål for uka.
 
 
 
-- Fjerne en full rad, og få alt over ned
-
-Hvis en rad er full, tøm, og alt over gå (y - 1)
-
+- Fikse tall og småting på kollisjonssjekk
 - Poeng - litt for å sette tetrino, mer for fullført rad
-
 - README
+- Tester!!
 
 
 finpussing, rydde i koden, ferdigstille
 
-#### 12/12: endelig innlevering! + skriveoppgave
+#### 12/12: innlevering + skriveoppgave
 
 ```shell
 Bruk tester!! Sjekk om kollisjon funker

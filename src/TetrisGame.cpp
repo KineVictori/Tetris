@@ -1,5 +1,6 @@
 
 #include "TetrisGame.hpp"
+#include "TetrisScene.hpp"
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
 #include <random>
@@ -36,6 +37,44 @@ Tetrino TetrisGame::getTetrinoCopy() {
     return _current_tetrino;
 }
 
+// points
+void TetrisGame::points() {
+    int points = 0;
+
+
+}
+
+bool TetrisGame::getBlock(int x, int y) {
+    return _boardGrid.at(y).at(x);
+}
+
+void TetrisGame::addBlock(int x, int y, bool invisible) {
+    _boardGrid.at(y).at(x) = true;
+    if (invisible)
+        return;
+    auto box = ThreeppHelper::createBox({static_cast<float>(x), static_cast<float>(y), 0}, Color::aliceblue);
+    _borderGroup->add(box);
+    _boxes.push_back(box);
+}
+
+void TetrisGame::delBlock(int x, int y, bool invisible) {
+    _boardGrid.at(y).at(x) = false;
+
+    if (invisible)
+        return;
+
+    std::shared_ptr<Mesh> box;
+    for (int i = 0 ; i < _boxes.size() ; i++) {
+        auto _box = _boxes[i];
+        if (_box->position.x == static_cast<float>(x) && _box->position.y == static_cast<float>(y)) {
+            box = _box;
+            break;
+        }
+    }
+
+    _borderGroup->remove(*box);
+}
+
 // controls for MyKeyListener
 void TetrisGame::moveLeft() {
     auto positions = _current_tetrino.getPositions();
@@ -47,21 +86,24 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.y).at(pos.x) = false;         // removes the positions from the grid array
+//        _boardGrid.at(pos.y).at(pos.x) = false;         // removes the positions from the grid array
+        delBlock(pos.x, pos.y, true);
     }
 
     for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
         if (_boardGrid.at(pos.y).at(pos.x - 1)) {
             std::cout<< "55"<< std::endl;
             for (auto pos : positions) {
-                _boardGrid.at(pos.y).at(pos.x) = true;
+//                _boardGrid.at(pos.y).at(pos.x) = true;
+                addBlock(pos.x, pos.y, true);
             }
             return;
         }
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.y).at(pos.x - 1) = true;      // creates new blocks in new position
+//        _boardGrid.at(pos.y).at(pos.x - 1) = true;      // creates new blocks in new position
+        addBlock(pos.x - 1, pos.y, true);
     }
 
     std::array<Vector3, 4> newPos;
@@ -85,21 +127,25 @@ void TetrisGame::moveRight() {
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.y).at(pos.x) = false;
+//        _boardGrid.at(pos.y).at(pos.x) = false;
+        delBlock(pos.x, pos.y, true);
     }
 
     for (auto pos : positions) {
         if (_boardGrid.at(pos.y).at(pos.x + 1)) {
+
             std::cout<< "95"<< std::endl;
             for (auto pos : positions) {
-                _boardGrid.at(pos.y).at(pos.x) = true;
+//                _boardGrid.at(pos.y).at(pos.x) = true;
+                addBlock(pos.x, pos.y, true);
             }
             return;
         }
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.y).at(pos.x + 1) = true;
+//        _boardGrid.at(pos.y).at(pos.x + 1) = true;
+        addBlock(pos.x + 1, pos.y, true);
     }
 
     std::array<Vector3, 4> newPos;
@@ -117,24 +163,31 @@ void TetrisGame::moveDown() {
     auto positions = _current_tetrino.getPositions();
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.y).at(pos.x) = false;
+//        _boardGrid.at(pos.y).at(pos.x) = false;
+        delBlock(pos.x, pos.y, true);
     }
 
     for (auto pos : positions) {                      // if tetrino crashes downwards, stop it and send new tetrino
         if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
             std::cout<< "129"<< std::endl;
             for (auto pos : positions) {
-                _boardGrid.at(pos.y).at(pos.x) = true;
+//                _boardGrid.at(pos.y).at(pos.x) = true;
+                addBlock(pos.x, pos.y, false);
             }
+            removeTetrinoSceneFunction(_current_tetrino);
+//            delete _current_tetrino.getGroup();
             _current_tetrino = randomTetrino();
             newTetrinoSceneFunction(_current_tetrino);
+
             moveRowDown();
+            points();
             return;
         }
     }
 
     for (auto pos : positions) {
-        _boardGrid.at(pos.y - 1).at(pos.x) = true;
+//        _boardGrid.at(pos.y - 1).at(pos.x) = true;
+        addBlock(pos.x, pos.y - 1, true);
     }
 
     std::array<Vector3, 4> newPos;
@@ -151,57 +204,126 @@ void TetrisGame::moveDown() {
 
 }
 
+// remove full rows and move the others down
+void TetrisGame::moveRowDown() {
+
+    int lowestFullRow = -1;
+    for (int i = 0 ; i < 22 ; i++) {
+        auto row = _boardGrid.at(i);
+
+        bool full = true;
+        for (int col = 2 ; col < 15 ; col++) { // Kanskje 1 og 16, kanskje 17
+            if (! row.at(col)) {full = false;}
+        }
+
+        if (full) {
+            lowestFullRow = i;
+            break;
+        }
+    }
+
+    if (lowestFullRow != -1) {
+        std::cout << "Falling row" << "\n";
+        for (int y = lowestFullRow ; y < 20 ; y++) { // Kanskje 22 eller 23
+//            _boardGrid.at(i) = _boardGrid.at(i+1);
+            for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
+                auto blockAbove = getBlock(x, y + 1);
+                if (blockAbove) {
+                    addBlock(x, y);
+                }
+                else {
+                    delBlock(x, y);
+                }
+            }
+        }
+
+        moveRowDown();
+    }
+}
+
 // rotation for the different tetrino shapes
-void TetrisGame::rotateTetrino() {
+bool TetrisGame::rotateTetrino() {
 
     auto positions = _current_tetrino.getPositions();
     auto orientation = _current_tetrino.getOrientation();
+    Orientation newOrientation;
     std::array<Vector3, 4> newPos;
     std::array<Vector2, 4> offsets;
 
     switch (_current_tetrino.getShape()) {
         case I: {
-            rotateI(orientation, offsets);
+            newOrientation = rotateI(orientation, offsets);
         } break;
 
         case J: {
-            rotateJ(orientation, offsets);
+            newOrientation = rotateJ(orientation, offsets);
         } break;
 
         case L: {
-            rotateL(orientation, offsets);
+            newOrientation = rotateL(orientation, offsets);
         } break;
 
         case S: {
-            rotateS(orientation, offsets);
+            newOrientation = rotateS(orientation, offsets);
         } break;
 
         case Z: {
-            rotateZ(orientation, offsets);
+            newOrientation = rotateZ(orientation, offsets);
         } break;
 
         case T: {
-            rotateT(orientation, offsets);
+            newOrientation = rotateT(orientation, offsets);
         } break;
+    }
+
+    float collideOffset = 0;
+    bool willCollide = false;
+    for (int ix = 0; ix < 4; ix++) {
+        auto pos = positions.at(ix);
+        auto off = offsets.at(ix);
+
+        float leftBorderWall = 0.0;
+        float rightBorderWall = 17.0;
+
+        if (pos.x >= rightBorderWall || pos.x <= leftBorderWall /* || getBlock(pos.x, pos.y) collides with itself, fixable by not updating grid when moving*/) {
+            willCollide = true;
+
+            if (pos.x >= rightBorderWall) {
+                float diff = rightBorderWall - pos.x - 1;
+                if (diff < collideOffset) {
+                    collideOffset = diff;
+                }
+            }
+            if (pos.x <= leftBorderWall) {
+                float diff = leftBorderWall - pos.x + 1;
+                if (diff > collideOffset) {
+                    collideOffset = diff;
+                }
+            }
+        }
     }
 
     for (int ix = 0; ix < 4; ix++)
     {
         auto pos = positions.at(ix);
         auto off = offsets.at(ix);
+        int newPosX = pos.x + off.x + collideOffset;
+        int newPosY = pos.y + off.y;
 
-        _boardGrid.at(pos.y).at(pos.x) = false;
-        _boardGrid.at(pos.y + off.y).at(pos.x + off.x) = true;
+        delBlock(pos.x, pos.y, true);
+        addBlock(newPosX, newPosY, true);
 
-        newPos.at(ix) = {pos.x + off.x, pos.y + off.y, 0};
+        newPos.at(ix) = {static_cast<float>(newPosX), static_cast<float>(newPosY), 0};
     }
 
     _current_tetrino.setPositions(newPos);
     _current_tetrino.updateGroup();
+    _current_tetrino.setOrientation(newOrientation);
 
+    return true;
 }
 
-void TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offsets) {
+Orientation TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
     switch (orientation) {
 
@@ -211,7 +333,7 @@ void TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 1};
             offsets.at(3) = {-1, 2};
 
-            _current_tetrino.setOrientation(Orientation::RIGHT);
+            return (Orientation::RIGHT);
 
         } break;
 
@@ -221,7 +343,7 @@ void TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {1, -1};
             offsets.at(3) = {2, -2};
 
-            _current_tetrino.setOrientation(Orientation::DOWN);
+            return (Orientation::DOWN);
 
         } break;
 
@@ -231,7 +353,7 @@ void TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, 1};
 
-            _current_tetrino.setOrientation(Orientation::LEFT);
+            return (Orientation::LEFT);
 
         } break;
 
@@ -241,13 +363,13 @@ void TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {-1, 0};
             offsets.at(3) = {-2, -1};
 
-            _current_tetrino.setOrientation(Orientation::UP);
+            return (Orientation::UP);
 
         } break;
     }
 }
 
-void TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets) {
+Orientation TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
     switch (orientation) {
 
@@ -257,7 +379,7 @@ void TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {-1, 1};
             offsets.at(3) = {0, 2};
 
-            _current_tetrino.setOrientation(Orientation::RIGHT);
+            return (Orientation::RIGHT);
 
         } break;
 
@@ -267,7 +389,7 @@ void TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {1, 1};
             offsets.at(3) = {2, 0};
 
-            _current_tetrino.setOrientation(Orientation::DOWN);
+            return (Orientation::DOWN);
 
         } break;
 
@@ -277,7 +399,7 @@ void TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {1, -1};
             offsets.at(3) = {0, -2};
 
-            _current_tetrino.setOrientation(Orientation::LEFT);
+            return (Orientation::LEFT);
 
         } break;
 
@@ -287,13 +409,13 @@ void TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {-1, -1};
             offsets.at(3) = {-2, 0};
 
-            _current_tetrino.setOrientation(Orientation::UP);
+            return (Orientation::UP);
 
         } break;
     }
 }
 
-void TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offsets) {
+Orientation TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
     switch (orientation) {
 
@@ -303,7 +425,7 @@ void TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {-1, 1};
             offsets.at(3) = {-2, 0};
 
-            _current_tetrino.setOrientation(Orientation::RIGHT);
+            return (Orientation::RIGHT);
 
         } break;
 
@@ -313,7 +435,7 @@ void TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {1, 1};
             offsets.at(3) = {0, 2};
 
-            _current_tetrino.setOrientation(Orientation::DOWN);
+            return (Orientation::DOWN);
 
         } break;
 
@@ -323,7 +445,7 @@ void TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {1, -1};
             offsets.at(3) = {2, 0};
 
-            _current_tetrino.setOrientation(Orientation::LEFT);
+            return (Orientation::LEFT);
 
         } break;
 
@@ -333,13 +455,13 @@ void TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {-1, -1};
             offsets.at(3) = {0, -2};
 
-            _current_tetrino.setOrientation(Orientation::UP);
+            return (Orientation::UP);
 
         } break;
     }
 }
 
-void TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offsets) {
+Orientation TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
     switch (orientation) {
 
@@ -349,7 +471,7 @@ void TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, 1};
 
-            _current_tetrino.setOrientation(Orientation::RIGHT);
+            return (Orientation::RIGHT);
 
         } break;
 
@@ -359,7 +481,7 @@ void TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, -1};
 
-            _current_tetrino.setOrientation(Orientation::DOWN);
+            return (Orientation::DOWN);
 
         } break;
 
@@ -369,7 +491,7 @@ void TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, -1};
 
-            _current_tetrino.setOrientation(Orientation::LEFT);
+            return (Orientation::LEFT);
 
         } break;
 
@@ -379,13 +501,13 @@ void TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, 1};
 
-            _current_tetrino.setOrientation(Orientation::UP);
+            return (Orientation::UP);
 
         } break;
     }
 }
 
-void TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offsets) {
+Orientation TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
     switch (orientation) {
 
@@ -395,7 +517,7 @@ void TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, -1};
 
-            _current_tetrino.setOrientation(Orientation::RIGHT);
+            return (Orientation::RIGHT);
 
         } break;
 
@@ -405,7 +527,7 @@ void TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, 1};
 
-            _current_tetrino.setOrientation(Orientation::DOWN);
+            return (Orientation::DOWN);
 
         } break;
 
@@ -415,7 +537,7 @@ void TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, 1};
 
-            _current_tetrino.setOrientation(Orientation::LEFT);
+            return (Orientation::LEFT);
 
         } break;
 
@@ -425,13 +547,13 @@ void TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, -1};
 
-            _current_tetrino.setOrientation(Orientation::UP);
+            return (Orientation::UP);
 
         } break;
     }
 }
 
-void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offsets) {
+Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
     switch (orientation) {
 
@@ -441,7 +563,7 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, 1};
 
-            _current_tetrino.setOrientation(Orientation::RIGHT);
+            return (Orientation::RIGHT);
 
         } break;
 
@@ -451,7 +573,7 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {0, 0};
 
-            _current_tetrino.setOrientation(Orientation::DOWN);
+            return (Orientation::DOWN);
 
         } break;
 
@@ -461,7 +583,7 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {0, 0};
 
-            _current_tetrino.setOrientation(Orientation::LEFT);
+            return (Orientation::LEFT);
 
         } break;
 
@@ -471,7 +593,7 @@ void TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offset
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, -1};
 
-            _current_tetrino.setOrientation(Orientation::UP);
+            return (Orientation::UP);
 
         } break;
     }
@@ -497,30 +619,4 @@ Color TetrisGame::randomColor() {
     std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
 
     return colors[randomNumber(rng)];
-}
-void TetrisGame::moveRowDown() {
-
-    int nedersteFulle = -1;
-    for (int i = 0; i < 22; i++) {
-        auto row = _boardGrid.at(i);
-
-        bool full = true;
-        for (int col = 2; col < 15; col++) { // Kanskje 1 og 16, kanskje 17
-            if (! row.at(col)) {full = false;}
-        }
-
-        if (full) {
-            nedersteFulle = i;
-            break;
-        }
-    }
-
-    if (nedersteFulle != -1) {
-        std::cout << "Falling row" << "\n";
-        for (int i = nedersteFulle; i < 20; i++) { // Kankjse 22 eller 23
-            _boardGrid.at(i) = _boardGrid.at(i+1);
-        }
-
-        moveRowDown();
-    }
 }

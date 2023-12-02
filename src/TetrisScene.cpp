@@ -70,10 +70,25 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
             }
         }
 
-        _textHandles.at(0)->setText("Points: " + std::to_string(iterations) + " | Pos: " + std::to_string(game.getTetrinoGroup()->position.y));
+//        _textHandles.at(0)->setText("Points: " + std::to_string(points()));
     });
 }
 
-void TetrisScene::newTetrino(Tetrino pastTetrino) {
-    getScene()->add(pastTetrino.getGroup());
+void TetrisScene::newTetrino(Tetrino newTetrino) {
+    getScene()->add(newTetrino.getGroup());
+}
+
+void TetrisScene::removeTetrino(Tetrino previousTetrino) {
+//    getScene()->remove(previousTetrino.getGroup());
+
+//    previousTetrino.getGroup()->removeFromParent();
+    getScene()->remove(*previousTetrino.getGroup());
+
+//    std::array<Vector3, 4> newPos;
+//    for (int i = 0; i < 4; i++) {
+//        newPos.at(i) = {0, -100, 0};
+//    }
+//
+//    previousTetrino.setPositions(newPos);
+//    previousTetrino.updateGroup();
 }

@@ -14,6 +14,12 @@ class TetrisGame {
 
 public:
     TetrisGame();
+
+    void points();
+    bool getBlock(int x, int y);
+    void addBlock(int x, int y, bool invisible = false);
+    void delBlock(int x, int y, bool invisible = false);
+
     std::shared_ptr<Group> getBorderGroup ();
     std::shared_ptr<Group> getTetrinoGroup ();
     Tetrino getTetrinoCopy();
@@ -22,14 +28,14 @@ public:
     void moveRight();
     void moveDown();
 
-    void rotateI(Orientation orientation, std::array<Vector2, 4> &offsets);
-    void rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets);
-    void rotateL(Orientation orientation, std::array<Vector2, 4> &offsets);
-    void rotateS(Orientation orientation, std::array<Vector2, 4> &offsets);
-    void rotateZ(Orientation orientation, std::array<Vector2, 4> &offsets);
-    void rotateT(Orientation orientation, std::array<Vector2, 4> &offsets);
+    Orientation rotateI(Orientation orientation, std::array<Vector2, 4> &offsets);
+    Orientation rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets);
+    Orientation rotateL(Orientation orientation, std::array<Vector2, 4> &offsets);
+    Orientation rotateS(Orientation orientation, std::array<Vector2, 4> &offsets);
+    Orientation rotateZ(Orientation orientation, std::array<Vector2, 4> &offsets);
+    Orientation rotateT(Orientation orientation, std::array<Vector2, 4> &offsets);
 
-    void rotateTetrino();
+    bool rotateTetrino();
     static Tetrino randomTetrino();
     static Color randomColor();
 
@@ -38,13 +44,14 @@ public:
     std::shared_ptr<Group> renderedGroup;
     TetrisScene *sceneHandler;
     void (*newTetrinoSceneFunction)(Tetrino);
+    void (*removeTetrinoSceneFunction)(Tetrino);
 
 private:
     std::shared_ptr<Group> _borderGroup;
     Tetrino _current_tetrino;
 
-
-    std::array<std::array<bool, 17>, 24> _boardGrid = {false};
+    std::vector<std::shared_ptr<Mesh>> _boxes = {};
+    std::array<std::array<bool, 20>, 28> _boardGrid = {false};
 
 };
 
