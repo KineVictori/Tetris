@@ -101,10 +101,6 @@ std::shared_ptr<Group> Tetrino::getGroup() {
     return _group;
 }
 
-//Group* Tetrino::getRegularPointerGroup() {
-//    return &_group;
-//}
-
 std::array<Vector3, 4> Tetrino::getPositions() {
     std::array<Vector3, 4> totalPos = {position0, position1, position2, position3};
     return totalPos;

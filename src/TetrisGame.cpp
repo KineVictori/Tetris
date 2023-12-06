@@ -38,10 +38,9 @@ Tetrino TetrisGame::getTetrinoCopy() {
 }
 
 // points
-void TetrisGame::points() {
-    int points = 0;
+void TetrisGame::pointsCalculation(int rowsDeleted) {
 
-
+    pointsValue += rowsDeleted * 1200;
 }
 
 bool TetrisGame::getBlock(int x, int y) {
@@ -86,15 +85,13 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-//        _boardGrid.at(pos.y).at(pos.x) = false;         // removes the positions from the grid array
-        delBlock(pos.x, pos.y, true);
+        delBlock(pos.x, pos.y, true);       // removes the positions from the grid array
     }
 
     for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
         if (_boardGrid.at(pos.y).at(pos.x - 1)) {
             std::cout<< "55"<< std::endl;
             for (auto pos : positions) {
-//                _boardGrid.at(pos.y).at(pos.x) = true;
                 addBlock(pos.x, pos.y, true);
             }
             return;
@@ -102,8 +99,7 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-//        _boardGrid.at(pos.y).at(pos.x - 1) = true;      // creates new blocks in new position
-        addBlock(pos.x - 1, pos.y, true);
+        addBlock(pos.x - 1, pos.y, true);       // creates new blocks in new position
     }
 
     std::array<Vector3, 4> newPos;
@@ -127,7 +123,6 @@ void TetrisGame::moveRight() {
     }
 
     for (auto pos : positions) {
-//        _boardGrid.at(pos.y).at(pos.x) = false;
         delBlock(pos.x, pos.y, true);
     }
 
@@ -136,7 +131,6 @@ void TetrisGame::moveRight() {
 
             std::cout<< "95"<< std::endl;
             for (auto pos : positions) {
-//                _boardGrid.at(pos.y).at(pos.x) = true;
                 addBlock(pos.x, pos.y, true);
             }
             return;
@@ -144,7 +138,6 @@ void TetrisGame::moveRight() {
     }
 
     for (auto pos : positions) {
-//        _boardGrid.at(pos.y).at(pos.x + 1) = true;
         addBlock(pos.x + 1, pos.y, true);
     }
 
@@ -163,7 +156,6 @@ void TetrisGame::moveDown() {
     auto positions = _current_tetrino.getPositions();
 
     for (auto pos : positions) {
-//        _boardGrid.at(pos.y).at(pos.x) = false;
         delBlock(pos.x, pos.y, true);
     }
 
@@ -171,22 +163,21 @@ void TetrisGame::moveDown() {
         if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
             std::cout<< "129"<< std::endl;
             for (auto pos : positions) {
-//                _boardGrid.at(pos.y).at(pos.x) = true;
                 addBlock(pos.x, pos.y, false);
             }
             removeTetrinoSceneFunction(_current_tetrino);
-//            delete _current_tetrino.getGroup();
             _current_tetrino = randomTetrino();
             newTetrinoSceneFunction(_current_tetrino);
 
+            int rowsDeleted = moveRowDown();
             moveRowDown();
-            points();
+            pointsCalculation(rowsDeleted);
             return;
+
         }
     }
 
     for (auto pos : positions) {
-//        _boardGrid.at(pos.y - 1).at(pos.x) = true;
         addBlock(pos.x, pos.y - 1, true);
     }
 
@@ -205,14 +196,14 @@ void TetrisGame::moveDown() {
 }
 
 // remove full rows and move the others down
-void TetrisGame::moveRowDown() {
+int TetrisGame::moveRowDown() {
 
     int lowestFullRow = -1;
     for (int i = 0 ; i < 22 ; i++) {
         auto row = _boardGrid.at(i);
 
         bool full = true;
-        for (int col = 2 ; col < 15 ; col++) { // Kanskje 1 og 16, kanskje 17
+        for (int col = 1 ; col < 17 ; col++) { // Kanskje 1 og 16, kanskje 17
             if (! row.at(col)) {full = false;}
         }
 
@@ -225,7 +216,6 @@ void TetrisGame::moveRowDown() {
     if (lowestFullRow != -1) {
         std::cout << "Falling row" << "\n";
         for (int y = lowestFullRow ; y < 20 ; y++) { // Kanskje 22 eller 23
-//            _boardGrid.at(i) = _boardGrid.at(i+1);
             for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
                 auto blockAbove = getBlock(x, y + 1);
                 if (blockAbove) {
@@ -236,9 +226,10 @@ void TetrisGame::moveRowDown() {
                 }
             }
         }
-
-        moveRowDown();
+        return 1 + moveRowDown();
     }
+
+    return 0;
 }
 
 // rotation for the different tetrino shapes

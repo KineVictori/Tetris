@@ -15,7 +15,8 @@ class TetrisGame {
 public:
     TetrisGame();
 
-    void points();
+    int pointsValue = 0;
+    void pointsCalculation(int rowsDeleted);
     bool getBlock(int x, int y);
     void addBlock(int x, int y, bool invisible = false);
     void delBlock(int x, int y, bool invisible = false);
@@ -39,7 +40,7 @@ public:
     static Tetrino randomTetrino();
     static Color randomColor();
 
-    void moveRowDown();
+    int moveRowDown();
 
     std::shared_ptr<Group> renderedGroup;
     TetrisScene *sceneHandler;

@@ -13,13 +13,15 @@ class Tetrino {
 
 public:
     Tetrino(Shapes shape, const Vector3& pos, const Color& color);
-    std::shared_ptr<Group> getGroup();
-    Group* getRegularPointerGroup();
+
     void setPositions(std::array<Vector3, 4> newPos);
-    std::array<Vector3, 4> getPositions();
-    Shapes getShape();
     void setOrientation(Orientation orientation);
+
+    std::array<Vector3, 4> getPositions();
     Orientation getOrientation();
+    std::shared_ptr<Group> getGroup();
+    Shapes getShape();
+
     void updateGroup();
 
 private:
