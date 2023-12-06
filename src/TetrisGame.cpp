@@ -67,8 +67,15 @@ void TetrisGame::delBlock(int x, int y, bool invisible) {
         auto _box = _boxes[i];
         if (_box->position.x == static_cast<float>(x) && _box->position.y == static_cast<float>(y)) {
             box = _box;
+            _boxes.erase(_boxes.begin() + i);
             break;
         }
+    }
+
+
+    if (! box) {
+    //    throw std::runtime_error("Deleted non existing box");               // might happen if wrong invisible value used
+        std::cout << x << "||" << y << std::endl;
     }
 
     _borderGroup->remove(*box);
@@ -85,7 +92,7 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);       // removes the positions from the grid array
+        delBlock(pos.x, pos.y, true);       // removes the positions from the grid array, trengs ikke
     }
 
     for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
@@ -122,7 +129,7 @@ void TetrisGame::moveRight() {
     }
 
     for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);
+        delBlock(pos.x, pos.y, true);               // trengs ikke
     }
 
     for (auto pos : positions) {
@@ -191,7 +198,7 @@ void TetrisGame::moveDown() {
     _currentTetrino.setPositions(newPos);
     _currentTetrino.updateGroup();
 
-    std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
+//    std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
 
 }
 
@@ -208,7 +215,8 @@ int TetrisGame::moveRowDown() {
         }
 
         if (full) {
-            lowestFullRow = i;
+//            lowestFullRow = i;
+            lowestFullRow = 1;
             break;
         }
     }
@@ -216,12 +224,12 @@ int TetrisGame::moveRowDown() {
     if (lowestFullRow != -1) {
 
         for (int y = lowestFullRow ; y < 20 ; y++) { // Kanskje 22 eller 23
-
+            std::cout << "shifting y: " << y << std::endl;
             for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
 
                 auto blockAbove = getBlock(x, y + 1);
                 if (blockAbove) {
-                    addBlock(x, y, false, _currentTetrino.color);
+                    addBlock(x, y, false, _currentTetrino.color);   // block above color instead
                 }
                 else {
                     delBlock(x, y);
@@ -230,6 +238,14 @@ int TetrisGame::moveRowDown() {
         }
         return 1 + moveRowDown();
     }
+    // kanskje boxene ikke fjernes fra scene ordentlig?
+    // delete every visual box by deleting _box (cause delBlock has visual bug) SLETT FRA SCENE
+    // loop over bodrdgrid (er riktig)
+    // create new block at true position
+
+    // lag funksjon clean yesyes refresh visual block
+    // Tetrinoes bør helst solidifies og respawnes før moveRowDown,
+    // slik at de er lagd med invisible=False, men med refresh metoden betyr det ikke noe
     return 0;
 }
 
