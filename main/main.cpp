@@ -23,7 +23,7 @@ int main() {
 
 // adds the border and tetrinos in the scene
     TetrisScene::getScene()->add(game.getBorderGroup());
-    TetrisScene::newTetrino(game.getTetrinoCopy());
+    TetrisScene::newTetrino(game.getCurrentTetrino());
 
     // animates canvas
     sceneHandler.animateCanvas(game);

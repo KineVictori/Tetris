@@ -23,6 +23,7 @@ public:
     Shapes getShape();
 
     void updateGroup();
+    Color color;
 
 private:
     std::shared_ptr<Group> _group;

@@ -37,7 +37,14 @@ TetrisScene::TetrisScene()
     textHandle.setPosition(0, 0);
     textHandle.scale = 2;
     _textHandles.push_back(&textHandle);
+}
 
+void TetrisScene::newTetrino(Tetrino newTetrino) {
+    getScene()->add(newTetrino.getGroup());
+}
+
+void TetrisScene::removeTetrino(Tetrino previousTetrino) {
+    getScene()->remove(*previousTetrino.getGroup());
 }
 
 std::shared_ptr<Scene> TetrisScene::getScene() {
@@ -50,7 +57,6 @@ void TetrisScene::addKeyListener(MyKeyListener &l) {
 
 void TetrisScene::animateCanvas(TetrisGame &game) {
 
-    // makes stuff move at a specific speed
     int iterations = 0;
     _canvas.animate([&] {
         auto dt = _clock.getDelta();
@@ -72,13 +78,4 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
 
         _textHandles.at(0)->setText("Points: " + std::to_string(game.pointsValue));
     });
-}
-
-void TetrisScene::newTetrino(Tetrino newTetrino) {
-    getScene()->add(newTetrino.getGroup());
-}
-
-void TetrisScene::removeTetrino(Tetrino previousTetrino) {
-
-    getScene()->remove(*previousTetrino.getGroup());
 }

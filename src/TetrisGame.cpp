@@ -1,6 +1,5 @@
 
 #include "TetrisGame.hpp"
-#include "TetrisScene.hpp"
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
 #include <random>
@@ -10,8 +9,8 @@
 using namespace threepp;
 
 
-TetrisGame::TetrisGame(): _borderGroup(Group::create()), _current_tetrino(randomTetrino()) {
-    renderedGroup = _current_tetrino.getGroup();
+TetrisGame::TetrisGame(): _borderGroup(Group::create()), _currentTetrino(randomTetrino()) {
+    renderedGroup = _currentTetrino.getGroup();
 
     // lower line
     for (int i = 0; i < 17; i++) {
@@ -30,28 +29,29 @@ std::shared_ptr<Group> TetrisGame::getBorderGroup() {
 }
 
 std::shared_ptr<Group> TetrisGame::getTetrinoGroup() {
-    return _current_tetrino.getGroup();
+    return _currentTetrino.getGroup();
 }
 
-Tetrino TetrisGame::getTetrinoCopy() {
-    return _current_tetrino;
+Tetrino TetrisGame::getCurrentTetrino() {
+    return _currentTetrino;
 }
 
 // points
 void TetrisGame::pointsCalculation(int rowsDeleted) {
-
     pointsValue += rowsDeleted * 1200;
 }
 
-bool TetrisGame::getBlock(int x, int y) {
+bool TetrisGame::getBlock(int x, int y, Color color) {
     return _boardGrid.at(y).at(x);
 }
 
-void TetrisGame::addBlock(int x, int y, bool invisible) {
+void TetrisGame::addBlock(int x, int y, bool invisible, Color color) {
     _boardGrid.at(y).at(x) = true;
+
     if (invisible)
         return;
-    auto box = ThreeppHelper::createBox({static_cast<float>(x), static_cast<float>(y), 0}, Color::aliceblue);
+
+    auto box = ThreeppHelper::createBox({static_cast<float>(x), static_cast<float>(y), 0}, color);
     _borderGroup->add(box);
     _boxes.push_back(box);
 }
@@ -76,7 +76,7 @@ void TetrisGame::delBlock(int x, int y, bool invisible) {
 
 // controls for MyKeyListener
 void TetrisGame::moveLeft() {
-    auto positions = _current_tetrino.getPositions();
+    auto positions = _currentTetrino.getPositions();
 
     for (auto pos : positions) {
         if (pos.x <= 1) {
@@ -90,7 +90,6 @@ void TetrisGame::moveLeft() {
 
     for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
         if (_boardGrid.at(pos.y).at(pos.x - 1)) {
-            std::cout<< "55"<< std::endl;
             for (auto pos : positions) {
                 addBlock(pos.x, pos.y, true);
             }
@@ -109,12 +108,12 @@ void TetrisGame::moveLeft() {
         newPos.at(i) = tmp;
     }
 
-    _current_tetrino.setPositions(newPos);
-    _current_tetrino.updateGroup();
+    _currentTetrino.setPositions(newPos);
+    _currentTetrino.updateGroup();
 }
 
 void TetrisGame::moveRight() {
-    auto positions = _current_tetrino.getPositions();
+    auto positions = _currentTetrino.getPositions();
 
     for (auto pos : positions) {
         if (pos.x >= 16) {
@@ -129,7 +128,6 @@ void TetrisGame::moveRight() {
     for (auto pos : positions) {
         if (_boardGrid.at(pos.y).at(pos.x + 1)) {
 
-            std::cout<< "95"<< std::endl;
             for (auto pos : positions) {
                 addBlock(pos.x, pos.y, true);
             }
@@ -148,12 +146,12 @@ void TetrisGame::moveRight() {
         newPos.at(i) = tmp;
     }
 
-    _current_tetrino.setPositions(newPos);
-    _current_tetrino.updateGroup();
+    _currentTetrino.setPositions(newPos);
+    _currentTetrino.updateGroup();
 }
 
 void TetrisGame::moveDown() {
-    auto positions = _current_tetrino.getPositions();
+    auto positions = _currentTetrino.getPositions();
 
     for (auto pos : positions) {
         delBlock(pos.x, pos.y, true);
@@ -163,17 +161,19 @@ void TetrisGame::moveDown() {
         if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
             std::cout<< "129"<< std::endl;
             for (auto pos : positions) {
-                addBlock(pos.x, pos.y, false);
+                addBlock(pos.x, pos.y, false, _currentTetrino.color);
             }
-            removeTetrinoSceneFunction(_current_tetrino);
-            _current_tetrino = randomTetrino();
-            newTetrinoSceneFunction(_current_tetrino);
+            removeTetrinoSceneFunction(_currentTetrino);
+            _currentTetrino = randomTetrino();
+            newTetrinoSceneFunction(_currentTetrino);
+
+            pointsValue += 100;
 
             int rowsDeleted = moveRowDown();
-            moveRowDown();
+
+            //moveRowDown();
             pointsCalculation(rowsDeleted);
             return;
-
         }
     }
 
@@ -188,8 +188,8 @@ void TetrisGame::moveDown() {
         newPos.at(i) = tmp;
     }
 
-    _current_tetrino.setPositions(newPos);
-    _current_tetrino.updateGroup();
+    _currentTetrino.setPositions(newPos);
+    _currentTetrino.updateGroup();
 
     std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
 
@@ -203,8 +203,8 @@ int TetrisGame::moveRowDown() {
         auto row = _boardGrid.at(i);
 
         bool full = true;
-        for (int col = 1 ; col < 17 ; col++) { // Kanskje 1 og 16, kanskje 17
-            if (! row.at(col)) {full = false;}
+        for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
+            if (! row.at(x)) {full = false;}
         }
 
         if (full) {
@@ -214,12 +214,14 @@ int TetrisGame::moveRowDown() {
     }
 
     if (lowestFullRow != -1) {
-        std::cout << "Falling row" << "\n";
+
         for (int y = lowestFullRow ; y < 20 ; y++) { // Kanskje 22 eller 23
+
             for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
+
                 auto blockAbove = getBlock(x, y + 1);
                 if (blockAbove) {
-                    addBlock(x, y);
+                    addBlock(x, y, false, _currentTetrino.color);
                 }
                 else {
                     delBlock(x, y);
@@ -228,20 +230,19 @@ int TetrisGame::moveRowDown() {
         }
         return 1 + moveRowDown();
     }
-
     return 0;
 }
 
 // rotation for the different tetrino shapes
 bool TetrisGame::rotateTetrino() {
 
-    auto positions = _current_tetrino.getPositions();
-    auto orientation = _current_tetrino.getOrientation();
+    auto positions = _currentTetrino.getPositions();
+    auto orientation = _currentTetrino.getOrientation();
     Orientation newOrientation;
     std::array<Vector3, 4> newPos;
     std::array<Vector2, 4> offsets;
 
-    switch (_current_tetrino.getShape()) {
+    switch (_currentTetrino.getShape()) {
         case I: {
             newOrientation = rotateI(orientation, offsets);
         } break;
@@ -307,9 +308,9 @@ bool TetrisGame::rotateTetrino() {
         newPos.at(ix) = {static_cast<float>(newPosX), static_cast<float>(newPosY), 0};
     }
 
-    _current_tetrino.setPositions(newPos);
-    _current_tetrino.updateGroup();
-    _current_tetrino.setOrientation(newOrientation);
+    _currentTetrino.setPositions(newPos);
+    _currentTetrino.updateGroup();
+    _currentTetrino.setOrientation(newOrientation);
 
     return true;
 }

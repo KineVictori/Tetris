@@ -7,9 +7,9 @@ This is a project making the game Tetris in 3D that uses `threepp` as a dependen
 ### Planen:
 
 - Fikse tall og småting på kollisjonssjekk
-- Poeng - litt for å sette tetrino, mer for fullført rad
+- Fikse moveRowDown for flere enn 1 rad (logikk er riktig, ikke render)
 - README
-- Tester!!
+- Tester!! Sjekk om random er random / kollisjon
 
 finpussing, rydde i koden, ferdigstille
 

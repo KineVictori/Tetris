@@ -10,7 +10,7 @@ using namespace threepp;
 // creates the boxes
 
 Tetrino::Tetrino(Shapes shape, const threepp::Vector3& pos, const threepp::Color& color)
-    : _group(Group::create()), _shape(shape), _orientation(Orientation::UP) {
+    : _group(Group::create()), _shape(shape), _orientation(Orientation::UP), color(color) {
 
     //switch statement for shape
     switch (shape) {
