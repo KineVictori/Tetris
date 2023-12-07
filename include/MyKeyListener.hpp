@@ -4,6 +4,7 @@
 
 #include <threepp/threepp.hpp>
 #include "TetrisGame.hpp"
+#include "TetrisScene.hpp"
 
 using namespace threepp;
 
@@ -12,7 +13,7 @@ using namespace threepp;
 class MyKeyListener: public KeyListener {
 
     public:
-        explicit MyKeyListener(TetrisGame &tetrisGame);
+        explicit MyKeyListener(TetrisScene &tetrisGame);
 
         void onKeyPressed(KeyEvent evt) override;
 
@@ -22,7 +23,7 @@ class MyKeyListener: public KeyListener {
 
     private:
         //float dt_{0};
-        TetrisGame &_tetrisGame;
+        TetrisScene &_tetrisGame;
 };
 
 

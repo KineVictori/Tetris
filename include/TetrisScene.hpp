@@ -4,7 +4,7 @@
 
 #include <threepp/threepp.hpp>
 #include "TetrisGame.hpp"
-#include "MyKeyListener.hpp"
+//#include "MyKeyListener.hpp"
 #include <vector>
 
 using namespace threepp;
@@ -13,22 +13,26 @@ using namespace threepp;
 class TetrisScene {
 
 public:
-    TetrisScene();
+    TetrisScene(TetrisGame &game);
 
-    //void points();
-    static std::shared_ptr<Scene> getScene();
-    void addKeyListener(MyKeyListener &l);
-    void animateCanvas(TetrisGame &game);
-    static void newTetrino(Tetrino newTetrino);
-    static void removeTetrino(Tetrino previousTetrino);
+    //void addKeyListener(MyKeyListener &l);
+    void animateCanvas();
 
+    Canvas& getCanvas() {return _canvas;}
+    void moveRight() {_game.moveRight();}
+    void moveLeft() {_game.moveLeft();}
+    void rotateTetrino() {_game.rotateTetrino();}
+    void moveDown(bool allTheWay) {_game.moveDown(allTheWay);}
 private:
     Canvas _canvas;
     GLRenderer _renderer;
     TextRenderer _textRenderer;
     std::shared_ptr<PerspectiveCamera> _camera;
-    inline static std::shared_ptr<Scene> _scene = Scene::create();
+    std::shared_ptr<Scene> _scene;
     Clock _clock;
+
+    void _updateScene();
+    TetrisGame _game;
 
     std::vector<TextHandle*> _textHandles;
 };

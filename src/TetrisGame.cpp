@@ -22,63 +22,21 @@ TetrisGame::TetrisGame(): _borderGroup(Group::create()), _currentTetrino(randomT
         _borderGroup->add(ThreeppHelper::createBox({0, static_cast<float>(i), 0}, Color::gray));
         _borderGroup->add(ThreeppHelper::createBox({17, static_cast<float>(i), 0}, Color::gray));
     }
+
+    for (auto &row : _boardGrid) {
+        for (auto &block : row) {
+            block = {0, 0, 0};
+        }
+    }
 }
 
 std::shared_ptr<Group> TetrisGame::getBorderGroup() {
     return _borderGroup;
 }
 
-std::shared_ptr<Group> TetrisGame::getTetrinoGroup() {
-    return _currentTetrino.getGroup();
-}
-
-Tetrino TetrisGame::getCurrentTetrino() {
-    return _currentTetrino;
-}
-
 // points
 void TetrisGame::pointsCalculation(int rowsDeleted) {
     pointsValue += rowsDeleted * 1200;
-}
-
-bool TetrisGame::getBlock(int x, int y, Color color) {
-    return _boardGrid.at(y).at(x);
-}
-
-void TetrisGame::addBlock(int x, int y, bool invisible, Color color) {
-    _boardGrid.at(y).at(x) = true;
-
-    if (invisible)
-        return;
-
-    auto box = ThreeppHelper::createBox({static_cast<float>(x), static_cast<float>(y), 0}, color);
-    _borderGroup->add(box);
-    _boxes.push_back(box);
-}
-
-void TetrisGame::delBlock(int x, int y, bool invisible) {
-    _boardGrid.at(y).at(x) = false;
-
-    if (invisible)
-        return;
-
-    std::shared_ptr<Mesh> box;
-    for (int i = 0 ; i < _boxes.size() ; i++) {
-        auto _box = _boxes[i];
-        if (_box->position.x == static_cast<float>(x) && _box->position.y == static_cast<float>(y)) {
-            box = _box;
-            _boxes.erase(_boxes.begin() + i);
-            break;
-        }
-    }
-
-
-    if (! box) {
-    //    throw std::runtime_error("Deleted non existing box");               // might happen if wrong invisible value used
-        std::cout << x << "||" << y << std::endl;
-    }
-
-    _borderGroup->remove(*box);
 }
 
 // controls for MyKeyListener
@@ -92,20 +50,11 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);       // removes the positions from the grid array, trengs ikke
-    }
-
-    for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
-        if (_boardGrid.at(pos.y).at(pos.x - 1)) {
-            for (auto pos : positions) {
-                addBlock(pos.x, pos.y, true);
-            }
-            return;
-        }
+        _boardGrid.at(pos.y).at(pos.x) = {0, 0, 0};
     }
 
     for (auto pos : positions) {
-        addBlock(pos.x - 1, pos.y, true);       // creates new blocks in new position
+        _boardGrid.at(pos.y).at(pos.x - 1) = _currentTetrino.color;
     }
 
     std::array<Vector3, 4> newPos;
@@ -116,7 +65,6 @@ void TetrisGame::moveLeft() {
     }
 
     _currentTetrino.setPositions(newPos);
-    _currentTetrino.updateGroup();
 }
 
 void TetrisGame::moveRight() {
@@ -124,26 +72,17 @@ void TetrisGame::moveRight() {
 
     for (auto pos : positions) {
         if (pos.x >= 16) {
+            std::cout << "Y tho 75" << "\n";
             return;
         }
     }
 
     for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);               // trengs ikke
+        _boardGrid.at(pos.y).at(pos.x) = {0, 0, 0};
     }
 
     for (auto pos : positions) {
-        if (_boardGrid.at(pos.y).at(pos.x + 1)) {
-
-            for (auto pos : positions) {
-                addBlock(pos.x, pos.y, true);
-            }
-            return;
-        }
-    }
-
-    for (auto pos : positions) {
-        addBlock(pos.x + 1, pos.y, true);
+        _boardGrid.at(pos.y).at(pos.x + 1) = _currentTetrino.color;
     }
 
     std::array<Vector3, 4> newPos;
@@ -154,52 +93,83 @@ void TetrisGame::moveRight() {
     }
 
     _currentTetrino.setPositions(newPos);
-    _currentTetrino.updateGroup();
 }
 
-void TetrisGame::moveDown() {
-    auto positions = _currentTetrino.getPositions();
+void TetrisGame::moveDown(bool allTheWay) {
+    if (allTheWay) {
+        while (true) {
+            auto positions = _currentTetrino.getPositions();
 
-    for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);
-    }
-
-    for (auto pos : positions) {                      // if tetrino crashes downwards, stop it and send new tetrino
-        if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
-            std::cout<< "129"<< std::endl;
             for (auto pos : positions) {
-                addBlock(pos.x, pos.y, false, _currentTetrino.color);
+                _boardGrid.at(pos.y).at(pos.x) = {0, 0, 0};
             }
-            removeTetrinoSceneFunction(_currentTetrino);
-            _currentTetrino = randomTetrino();
-            newTetrinoSceneFunction(_currentTetrino);
 
-            pointsValue += 100;
+            for (auto pos : positions) {                      // if tetrino crashes downwards, stop it and send new tetrino
+                if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x) != Color{0, 0, 0})) {
+                    std::cout<< "129"<< std::endl;
+                    for (auto pos : positions) {
+                        _boardGrid.at(pos.y).at(pos.x) = _currentTetrino.color;
+                    }
+                    _currentTetrino = randomTetrino();
 
-            int rowsDeleted = moveRowDown();
+                    pointsValue += 100;
 
-            //moveRowDown();
-            pointsCalculation(rowsDeleted);
-            return;
+                    int rowsDeleted = moveRowDown();
+                    pointsCalculation(rowsDeleted);
+                    return;
+                }
+            }
+
+            for (auto pos : positions) {
+                _boardGrid.at(pos.y - 1).at(pos.x) = _currentTetrino.color;
+            }
+
+            std::array<Vector3, 4> newPos;
+            for (int i = 0; i < 4; i++) {
+                auto tmp = positions.at(i);
+                tmp.y -= 1;
+                newPos.at(i) = tmp;
+            }
+
+            _currentTetrino.setPositions(newPos);
         }
+    } else {
+
+        auto positions = _currentTetrino.getPositions();
+
+        for (auto pos : positions) {
+            _boardGrid.at(pos.y).at(pos.x) = {0, 0, 0};
+        }
+
+        for (auto pos : positions) {// if tetrino crashes downwards, stop it and send new tetrino
+            if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x) != Color{0, 0, 0})) {
+                std::cout << "129" << std::endl;
+                for (auto pos : positions) {
+                    _boardGrid.at(pos.y).at(pos.x) = _currentTetrino.color;
+                }
+                _currentTetrino = randomTetrino();
+
+                pointsValue += 100;
+
+                int rowsDeleted = moveRowDown();
+                pointsCalculation(rowsDeleted);
+                return;
+            }
+        }
+
+        for (auto pos : positions) {
+            _boardGrid.at(pos.y - 1).at(pos.x) = _currentTetrino.color;
+        }
+
+        std::array<Vector3, 4> newPos;
+        for (int i = 0; i < 4; i++) {
+            auto tmp = positions.at(i);
+            tmp.y -= 1;
+            newPos.at(i) = tmp;
+        }
+
+        _currentTetrino.setPositions(newPos);
     }
-
-    for (auto pos : positions) {
-        addBlock(pos.x, pos.y - 1, true);
-    }
-
-    std::array<Vector3, 4> newPos;
-    for (int i = 0; i < 4; i++) {
-        auto tmp = positions.at(i);
-        tmp.y -= 1;
-        newPos.at(i) = tmp;
-    }
-
-    _currentTetrino.setPositions(newPos);
-    _currentTetrino.updateGroup();
-
-//    std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
-
 }
 
 // remove full rows and move the others down
@@ -211,7 +181,7 @@ int TetrisGame::moveRowDown() {
 
         bool full = true;
         for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
-            if (! row.at(x)) {full = false;}
+            if (row.at(x) == Color{0, 0, 0}) {full = false;}
         }
 
         if (full) {
@@ -224,28 +194,21 @@ int TetrisGame::moveRowDown() {
     if (lowestFullRow != -1) {
 
         for (int y = lowestFullRow ; y < 20 ; y++) { // Kanskje 22 eller 23
-            std::cout << "shifting y: " << y << std::endl;
+            // std::cout << "shifting y: " << y << std::endl;
             for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
 
-                auto blockAbove = getBlock(x, y + 1);
-                if (blockAbove) {
-                    addBlock(x, y, false, _currentTetrino.color);   // color of block above instead
+                auto blockAbove = _boardGrid.at(y + 1).at(x);
+                if (blockAbove != Color{0, 0, 0}) {
+                    _boardGrid.at(y).at(x) = blockAbove;
                 }
                 else {
-                    delBlock(x, y);
+                    _boardGrid.at(y).at(x) = {0, 0, 0};
                 }
             }
         }
         return 1 + moveRowDown();
     }
-    // kanskje boxene ikke fjernes fra scene ordentlig?
-    // delete every visual box by deleting _box (cause delBlock has visual bug) SLETT FRA SCENE
-    // loop over boardgrid (er riktig)
-    // create new block at true position
 
-    // lag funksjon clean yesyes refresh visual block
-    // Tetrinoes bør helst solidifies og respawnes før moveRowDown,
-    // slik at de er lagd med invisible=False, men med refresh metoden betyr det ikke noe
     return 0;
 }
 
@@ -318,8 +281,8 @@ bool TetrisGame::rotateTetrino() {
         int newPosX = pos.x + off.x + collideOffset;
         int newPosY = pos.y + off.y;
 
-        delBlock(pos.x, pos.y, true);
-        addBlock(newPosX, newPosY, true);
+        _boardGrid.at(pos.y).at(pos.x) = Color{0, 0, 0};
+        _boardGrid.at(newPosY).at(newPosX) = _currentTetrino.color;
 
         newPos.at(ix) = {static_cast<float>(newPosX), static_cast<float>(newPosY), 0};
     }
@@ -627,4 +590,8 @@ Color TetrisGame::randomColor() {
     std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
 
     return colors[randomNumber(rng)];
+}
+
+std::array<std::array<Color, 20>, 28>& TetrisGame::getBoard() {
+    return _boardGrid;
 }

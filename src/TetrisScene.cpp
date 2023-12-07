@@ -1,18 +1,21 @@
 
 #include "TetrisScene.hpp"
-#include "MyKeyListener.hpp"
+//#include "MyKeyListener.hpp"
 #include "TetrisGame.hpp"
 #include <iostream>
 #include <threepp/threepp.hpp>
+#include "ThreeppHelper.hpp"
 
 using namespace threepp;
 
-TetrisScene::TetrisScene()
+TetrisScene::TetrisScene(TetrisGame &game)
     : _canvas("Tetris", {{"aa", 4}}),
       _renderer(_canvas.size()),
       _textRenderer(),
+      _scene(Scene::create()),
       _camera(PerspectiveCamera::create()),
-      _clock()
+      _clock(),
+      _game(game)
 {
     // creates the canvas
     _canvas.setSize({600, 800});
@@ -39,31 +42,37 @@ TetrisScene::TetrisScene()
     _textHandles.push_back(&textHandle);
 }
 
-void TetrisScene::newTetrino(Tetrino newTetrino) {
-    getScene()->add(newTetrino.getGroup());
+//void TetrisScene::addKeyListener(MyKeyListener &l) {
+//    _canvas.addKeyListener(&l);
+//}
+
+void TetrisScene::_updateScene() {
+
+    _scene->clear();
+    auto borderGroup = _game.getBorderGroup();
+    _scene->add(borderGroup);
+
+    auto board = _game.getBoard();
+    for (int row = 0; row < 24; row++)
+    {
+        for (int col = 0; col < 17; col++)
+        {
+            auto color = board.at(row).at(col);
+            if (color != Color{0, 0, 0})
+            {
+                Vector3 pos = {static_cast<float>(col), static_cast<float>(row), 0};
+                _scene->add(ThreeppHelper::createBox(pos, color));
+            }
+        }
+    }
 }
 
-void TetrisScene::removeTetrino(Tetrino previousTetrino) {
-    getScene()->remove(*previousTetrino.getGroup());
-}
-
-std::shared_ptr<Scene> TetrisScene::getScene() {
-    return _scene;
-}
-
-void TetrisScene::addKeyListener(MyKeyListener &l) {
-    _canvas.addKeyListener(&l);
-}
-
-void TetrisScene::animateCanvas(TetrisGame &game) {
+void TetrisScene::animateCanvas() {
 
     int iterations = 0;
     _canvas.animate([&] {
-        auto dt = _clock.getDelta();
-        //l.setDeltaTime(dt);
 
-// noe skulle her ... husker ikke
-
+        _updateScene();
         _renderer.render(*_scene, *_camera);
         _renderer.resetState();                                 // needed when using TextRenderer
         _textRenderer.render();
@@ -71,11 +80,9 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
         iterations++;
 
         if (iterations % 60 == 0) {
-            if (game.getTetrinoGroup()->position.y > (-21)) {
-                game.moveDown();
-            }
+            _game.moveDown();
         }
 
-        _textHandles.at(0)->setText("Points: " + std::to_string(game.pointsValue));
+        _textHandles.at(0)->setText("Points: " + std::to_string(_game.pointsValue));
     });
 }

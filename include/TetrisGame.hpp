@@ -17,17 +17,12 @@ public:
 
     int pointsValue = 0;
     void pointsCalculation(int rowsDeleted);
-    bool getBlock(int x, int y, Color color = Color(1, 1, 1));
-    void addBlock(int x, int y, bool invisible = false, Color color = Color(1, 1, 1));
-    void delBlock(int x, int y, bool invisible = false);
 
     std::shared_ptr<Group> getBorderGroup ();
-    std::shared_ptr<Group> getTetrinoGroup ();
-    Tetrino getCurrentTetrino();
 
     void moveLeft();
     void moveRight();
-    void moveDown();
+    void moveDown(bool allTheWay = false);
 
     static Orientation rotateI(Orientation orientation, std::array<Vector2, 4> &offsets);
     static Orientation rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets);
@@ -43,16 +38,14 @@ public:
     int moveRowDown();
 
     std::shared_ptr<Group> renderedGroup;
-    //TetrisScene *sceneHandler;
-    void (*newTetrinoSceneFunction)(Tetrino);
-    void (*removeTetrinoSceneFunction)(Tetrino);
+    std::array<std::array<Color, 20>, 28>& getBoard();
 
 private:
     std::shared_ptr<Group> _borderGroup;
     Tetrino _currentTetrino;
 
     std::vector<std::shared_ptr<Mesh>> _boxes = {};
-    std::array<std::array<bool, 20>, 28> _boardGrid = {false};
+    std::array<std::array<Color, 20>, 28> _boardGrid;
 
 };
 
