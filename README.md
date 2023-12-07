@@ -28,6 +28,7 @@ Since this project uses `threepp` to render, you will need to have [vcpkg](https
 installed and these lines in the CMake build profile:
 
 ```shell
+-DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake   # call CMake with this.
 -DVCPKG_TARGET_TRIPLET=x64-mingw-[static|dynamic]  # choose either `static` or `dynamic`.
 -DVCPKG_HOST_TRIPLET=x64-mingw-[static|dynamic]    # <-- needed only if MSVC cannot be found. 
 ```
@@ -60,5 +61,6 @@ The solution over would also fix this problem, since it then no longer can crash
 
 - Push back `tetrino` when rotated into the sidewalls of the border.
 - Clear the rendered boxes of all completed rows if more than one row is cleared at once, not just the first.
+- Have the new rendered boxes keep their supposed colour.
 - Shadows for better 3D effect.
 
