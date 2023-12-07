@@ -20,12 +20,14 @@ The game works great as long as you only clear one row at the time, and don't lo
 The logic behind works, but the rendering got complicated fast and only deletes boxes on the first full row.
 So now, when you clear multiple rows at once, the new ```Tetrino``` will continue to fall as many boxes as should have been cleared into the ones that are still there.
 This is a rendering problem I'm still trying to figure out. 
+
 It could be fixed by instead of having two sets of the game board (one visual and one for logic),
 to have only one and then a function which render the values in the grid that are ```true```.
-This would also fix the problem with rotation at the border, since it then no longer can crash into itself (see comment in TetrisGame.cpp).
 
 Also, if you try to rotate at the border you are supposed to get pushed out again so that the ```Tetrino``` won't rotate into it,
 but this works only sometimes.
+The solution over would also fix this problem, since it then no longer can crash into itself (see comment in TetrisGame.cpp).
+
 
 ### Further improvements:
 
