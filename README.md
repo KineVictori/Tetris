@@ -33,18 +33,22 @@ installed and these lines in the CMake build profile:
 ## Current state
 
 As of December 7th, 2023 the game is still a work in progress and I keep finding more and more to improve.
-The game works great as long as you only clear one row at a time, and don't look at the colours after the 
-first cleared row.
+
+The game works great as long as you only clear one row at a time, and don't look at the colours after the first 
+cleared row.
 
 ### Known bugs
 
-- The logic behind works, but the rendering got complicated fast and only deletes boxes on the first full row.
-So now, when you clear multiple rows at once, the new `tetrino` will continue to fall as many boxes as should have 
-been cleared into the ones that are still there.
+- The internal game logic works correctly, but the rendering of the blocks got complicated, and 
+specifically the function for removing visual blocks isn't working correctly and only deletes boxes on the first 
+full row. So now, when you clear multiple rows at once, the new `tetrino` will continue to fall as many boxes as 
+should have been cleared into the ones that are still there.
 
 This is a rendering problem I'm still trying to figure out.
-It could be fixed by instead of having two sets of the game board (one visual and one for logic),
-to have only one and then a function which render the values in the grid that are `true`.
+It could be fixed by implementing the box rendering in a different way.
+Since the problem is the rendering and not the logic, the visual boxes could all be deleted and then added new ones
+in the new places when a row is moved, as if refreshing the screen. 
+Adding the boxes has never been a problem, only deleting them.
 
 - Also, if you try to rotate at the border you are supposed to get pushed out again so that the `tetrino` won't 
 rotate into it, but this works only sometimes.
@@ -52,10 +56,13 @@ rotate into it, but this works only sometimes.
 The solution over would also fix this problem, since it then no longer can crash into itself 
 (see comment in TetrisGame.cpp).
 
+- When the rows are moved, all the boxes "in motion" will be the same colour as `_currentTetrino` instead of 
+keeping their own. This became complicated to fix since the color of the mesh object is private.
+
 ### Further improvements summarised
 
 - Push back `tetrino` when rotated into the sidewalls of the border.
 - Clear the rendered boxes of all completed rows if more than one row is cleared at once, not just the first.
-- Have the new rendered boxes keep their supposed colour.
+- Have the new rendered boxes keep their colour when moved.
 - Shadows for better 3D effect.
 
