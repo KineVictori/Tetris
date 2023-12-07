@@ -50,6 +50,16 @@ Since the problem is the rendering and not the logic, the visual boxes could all
 in the new places when a row is moved, as if refreshing the screen. 
 Adding the boxes has never been a problem, only deleting them.
 
+Pseudocode for how to fix:
+```shell
+_scene.clear()
+_boxes.clear()
+
+for y in gamegrid
+  for x in gamegrid[y]
+    if gamegrid[y][x] == True: addBlock(x, y)
+```
+
 - Also, if you try to rotate at the border you are supposed to get pushed out again so that the `tetrino` won't 
 rotate into it, but this works only sometimes.
 
