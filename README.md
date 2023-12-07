@@ -1,7 +1,5 @@
 # 3D Tetris
 
----
-
 3D Tetris is a "homemade copy" of the original Tetris game. 
 
 This project utilises the [Threepp library](https://github.com/markaren/threepp), and was made for an exam 
@@ -20,9 +18,8 @@ The KeyListener lets the player move and rotate the `tetrinos` in the game with 
 - D - Move right
 - W - Rotate
 
-## How to build
 
----
+## How to build
 
 Since this project uses `threepp` to render, you will need to have [vcpkg](https://vcpkg.io/en/getting-started.html) 
 installed and these lines in the CMake build profile:
@@ -34,8 +31,6 @@ installed and these lines in the CMake build profile:
 ```
 
 ## Current state
-
----
 
 As of December 7th, 2023 the game is still a work in progress and I keep finding more and more to improve.
 The game works great as long as you only clear one row at a time, and don't look at the colours after the 
