@@ -28,6 +28,7 @@ Also, if you try to rotate at the border you are supposed to get pushed out agai
 but this works only sometimes.
 The solution over would also fix this problem, since it then no longer can crash into itself (see comment in TetrisGame.cpp).
 
+---
 
 ### Further improvements:
 
