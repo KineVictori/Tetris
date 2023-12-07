@@ -229,7 +229,7 @@ int TetrisGame::moveRowDown() {
 
                 auto blockAbove = getBlock(x, y + 1);
                 if (blockAbove) {
-                    addBlock(x, y, false, _currentTetrino.color);   // block above color instead
+                    addBlock(x, y, false, _currentTetrino.color);   // color of block above instead
                 }
                 else {
                     delBlock(x, y);
@@ -240,7 +240,7 @@ int TetrisGame::moveRowDown() {
     }
     // kanskje boxene ikke fjernes fra scene ordentlig?
     // delete every visual box by deleting _box (cause delBlock has visual bug) SLETT FRA SCENE
-    // loop over bodrdgrid (er riktig)
+    // loop over boardgrid (er riktig)
     // create new block at true position
 
     // lag funksjon clean yesyes refresh visual block
