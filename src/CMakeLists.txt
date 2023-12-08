@@ -7,5 +7,5 @@ add_library(TetrisLibrary
     ThreeppHelper.cpp
 )
 
-target_include_directories(TetrisLibrary PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(TetrisLibrary PUBLIC "${CMAKE_SOURCE_DIR}/include")
 target_link_libraries(TetrisLibrary PUBLIC threepp::threepp)

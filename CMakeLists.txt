@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(exam_tetris)
 
-option(Testing_Tetris "tetris test" on)
+option(testingTetris "tetris test" on)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -15,7 +15,7 @@ add_subdirectory(main)
 # Testing code copied from excercise1 from Markaren on GitHub
 # ============================
 
-if (Testing_Tetris)
+if (testingTetris)
 
     # Download Catch2 unit-test framework from GitHub
     include(FetchContent)
