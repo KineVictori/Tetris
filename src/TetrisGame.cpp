@@ -1,9 +1,8 @@
 
-#include "TetrisGame.hpp"
-#include <threepp/threepp.hpp>
-#include "ThreeppHelper.hpp"
 #include <random>
-
+#include <threepp/threepp.hpp>
+#include "TetrisGame.hpp"
+#include "ThreeppHelper.hpp"
 
 using namespace threepp;
 
