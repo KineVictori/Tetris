@@ -3,7 +3,6 @@
 #include <threepp/threepp.hpp>
 #include "ThreeppHelper.hpp"
 #include <random>
-#include "iostream"
 
 
 using namespace threepp;
@@ -73,9 +72,9 @@ void TetrisGame::delBlock(int x, int y, bool invisible) {
     }
 
 
-    if (! box) {
-    //    throw std::runtime_error("Deleted non existing box");               // might happen if wrong invisible value used
-    }
+//    if (! box) {
+//        throw std::runtime_error("Deleted non existing box");               // might happen if wrong invisible value used
+//    }
 
     _borderGroup->remove(*box);
 }
@@ -91,7 +90,7 @@ void TetrisGame::moveLeft() {
     }
 
     for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);       // removes the positions from the grid array, trengs ikke
+        delBlock(pos.x, pos.y, true);       // removes the positions from the grid array
     }
 
     for (auto pos : positions) {                      // if tetrino crashes, don't move sideways
@@ -128,7 +127,7 @@ void TetrisGame::moveRight() {
     }
 
     for (auto pos : positions) {
-        delBlock(pos.x, pos.y, true);               // trengs ikke
+        delBlock(pos.x, pos.y, true);
     }
 
     for (auto pos : positions) {

@@ -28,7 +28,6 @@ private:
     TextRenderer _textRenderer;
     std::shared_ptr<PerspectiveCamera> _camera;
     inline static std::shared_ptr<Scene> _scene = Scene::create();
-    Clock _clock;
 
     std::vector<TextHandle*> _textHandles;
 };

@@ -11,8 +11,7 @@ TetrisScene::TetrisScene()
     : _canvas("Tetris", {{"aa", 4}}),
       _renderer(_canvas.size()),
       _textRenderer(),
-      _camera(PerspectiveCamera::create()),
-      _clock()
+      _camera(PerspectiveCamera::create())
 {
     // creates the canvas
     _canvas.setSize({600, 800});
@@ -59,10 +58,6 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
 
     int iterations = 0;
     _canvas.animate([&] {
-        auto dt = _clock.getDelta();
-        //l.setDeltaTime(dt);
-
-// noe skulle her ... husker ikke
 
         _renderer.render(*_scene, *_camera);
         _renderer.resetState();                                 // needed when using TextRenderer
@@ -71,7 +66,7 @@ void TetrisScene::animateCanvas(TetrisGame &game) {
         iterations++;
 
         if (iterations % 60 == 0) {
-            if (game.getTetrinoGroup()->position.y > (-21)) {
+            if (game.getTetrinoGroup()->position.y > (-1)) {
                 game.moveDown();
             }
         }
