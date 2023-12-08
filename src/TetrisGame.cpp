@@ -603,7 +603,7 @@ Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> 
 // random shape and color
 Tetrino TetrisGame::randomTetrino() {
     // random number generator code copied from Cornstalks on StackOverflow
-    static std::random_device dev;         // sett alle 3 statisk
+    static std::random_device dev;
     static std::mt19937_64 rng(dev());
     static std::uniform_int_distribution<std::mt19937_64::result_type> randomNumber(0, 6);
 
