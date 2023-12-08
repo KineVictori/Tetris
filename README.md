@@ -42,7 +42,7 @@ cleared row.
 - The internal game logic works correctly, but the rendering of the blocks got complicated, and 
 specifically the function for removing visual blocks isn't working correctly and only deletes boxes on the first 
 full row. So now, when you clear multiple rows at once, the new `tetrino` will continue to fall as many boxes as 
-should have been cleared into the ones that are still there.
+should have been cleared into the ones that are still rendered.
 
 This is a rendering problem I'm still trying to figure out.
 It could be fixed by implementing the box rendering in a different way.
