@@ -75,7 +75,6 @@ void TetrisGame::delBlock(int x, int y, bool invisible) {
 
     if (! box) {
     //    throw std::runtime_error("Deleted non existing box");               // might happen if wrong invisible value used
-        std::cout << x << "||" << y << std::endl;
     }
 
     _borderGroup->remove(*box);
@@ -166,7 +165,6 @@ void TetrisGame::moveDown() {
 
     for (auto pos : positions) {                      // if tetrino crashes downwards, stop it and send new tetrino
         if ((pos.y == 1) || (_boardGrid.at(pos.y - 1).at(pos.x))) {
-            std::cout<< "129"<< std::endl;
             for (auto pos : positions) {
                 addBlock(pos.x, pos.y, false, _currentTetrino.color);
             }
@@ -178,7 +176,6 @@ void TetrisGame::moveDown() {
 
             int rowsDeleted = moveRowDown();
 
-            //moveRowDown();
             pointsCalculation(rowsDeleted);
             return;
         }
@@ -197,9 +194,6 @@ void TetrisGame::moveDown() {
 
     _currentTetrino.setPositions(newPos);
     _currentTetrino.updateGroup();
-
-//    std::cout<< positions.at(0).x << "||"<< positions.at(0).y <<std::endl;
-
 }
 
 // remove full rows and move the others down
@@ -210,7 +204,7 @@ int TetrisGame::moveRowDown() {
         auto row = _boardGrid.at(i);
 
         bool full = true;
-        for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
+        for (int x = 1 ; x < 17 ; x++) {
             if (! row.at(x)) {full = false;}
         }
 
@@ -223,9 +217,8 @@ int TetrisGame::moveRowDown() {
 
     if (lowestFullRow != -1) {
 
-        for (int y = lowestFullRow ; y < 20 ; y++) { // Kanskje 22 eller 23
-            std::cout << "shifting y: " << y << std::endl;
-            for (int x = 1 ; x < 17 ; x++) { // Kanskje 1 og 16, kanskje 17
+        for (int y = lowestFullRow ; y < 20 ; y++) {
+            for (int x = 1 ; x < 17 ; x++) {
 
                 auto blockAbove = getBlock(x, y + 1);
                 if (blockAbove) {
@@ -238,14 +231,14 @@ int TetrisGame::moveRowDown() {
         }
         return 1 + moveRowDown();
     }
-    // kanskje boxene ikke fjernes fra scene ordentlig?
-    // delete every visual box by deleting _box (cause delBlock has visual bug) SLETT FRA SCENE
-    // loop over boardgrid (er riktig)
-    // create new block at true position
+// bug with visual, can be fixed by implementing the rendering like this instead:
+// _scene.clear()
+// _boxes.clear()
+//
+// for y in gamegrid
+//      for x in gamegrid[y]
+//      if gamegrid[y][x] == True: addBlock(x, y)
 
-    // lag funksjon clean yesyes refresh visual block
-    // Tetrinoes bør helst solidifies og respawnes før moveRowDown,
-    // slik at de er lagd med invisible=False, men med refresh metoden betyr det ikke noe
     return 0;
 }
 

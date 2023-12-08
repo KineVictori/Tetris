@@ -5,7 +5,7 @@
 This project utilises the [Threepp library](https://github.com/markaren/threepp), and was made for an exam 
 in the course AIS1003 - "Object oriented programming for cyber physical systems".
 
-![img_1.png](img_1.png)
+![img.png](img.png)
 
 In this version of Tetris the game board is a bit bigger than the original game, and the shapes, `tetrinos`, 
 are in 3D and with new colours.
