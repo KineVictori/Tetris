@@ -31,7 +31,7 @@ TetrisScene::TetrisScene()
     });
 
     // text
-    auto& textHandle = _textRenderer.createHandle("Points: ");
+    auto& textHandle = _textRenderer.createHandle("Points: 0");
     textHandle.verticalAlignment = threepp::TextHandle::VerticalAlignment::TOP;
     textHandle.setPosition(0, 0);
     textHandle.scale = 2;
