@@ -324,6 +324,7 @@ bool TetrisGame::rotateTetrino() {
 
 Orientation TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
+    Orientation newOrientation;
     switch (orientation) {
 
         case UP: {
@@ -332,7 +333,7 @@ Orientation TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 1};
             offsets.at(3) = {-1, 2};
 
-            return (Orientation::RIGHT);
+            newOrientation = Orientation::RIGHT;
 
         } break;
 
@@ -342,7 +343,7 @@ Orientation TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {1, -1};
             offsets.at(3) = {2, -2};
 
-            return (Orientation::DOWN);
+            newOrientation = Orientation::DOWN;
 
         } break;
 
@@ -352,7 +353,7 @@ Orientation TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, 1};
 
-            return (Orientation::LEFT);
+            newOrientation = Orientation::LEFT;
 
         } break;
 
@@ -362,14 +363,17 @@ Orientation TetrisGame::rotateI(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {-1, 0};
             offsets.at(3) = {-2, -1};
 
-            return (Orientation::UP);
+            newOrientation = Orientation::UP;
 
         } break;
     }
+
+    return newOrientation;
 }
 
 Orientation TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
+    Orientation newOrientation;
     switch (orientation) {
 
         case UP: {
@@ -378,7 +382,7 @@ Orientation TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {-1, 1};
             offsets.at(3) = {0, 2};
 
-            return (Orientation::RIGHT);
+            newOrientation = Orientation::RIGHT;
 
         } break;
 
@@ -388,7 +392,7 @@ Orientation TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {1, 1};
             offsets.at(3) = {2, 0};
 
-            return (Orientation::DOWN);
+            newOrientation = Orientation::DOWN;
 
         } break;
 
@@ -398,7 +402,7 @@ Orientation TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {1, -1};
             offsets.at(3) = {0, -2};
 
-            return (Orientation::LEFT);
+            newOrientation = Orientation::LEFT;
 
         } break;
 
@@ -408,14 +412,17 @@ Orientation TetrisGame::rotateJ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {-1, -1};
             offsets.at(3) = {-2, 0};
 
-            return (Orientation::UP);
+            newOrientation = Orientation::UP;
 
         } break;
     }
+
+    return newOrientation;
 }
 
 Orientation TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
+    Orientation newOrientation;
     switch (orientation) {
 
         case UP: {
@@ -424,7 +431,7 @@ Orientation TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {-1, 1};
             offsets.at(3) = {-2, 0};
 
-            return (Orientation::RIGHT);
+            newOrientation = Orientation::RIGHT;
 
         } break;
 
@@ -434,7 +441,7 @@ Orientation TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {1, 1};
             offsets.at(3) = {0, 2};
 
-            return (Orientation::DOWN);
+            newOrientation = Orientation::DOWN;
 
         } break;
 
@@ -444,7 +451,7 @@ Orientation TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {1, -1};
             offsets.at(3) = {2, 0};
 
-            return (Orientation::LEFT);
+            newOrientation = Orientation::LEFT;
 
         } break;
 
@@ -454,14 +461,17 @@ Orientation TetrisGame::rotateL(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {-1, -1};
             offsets.at(3) = {0, -2};
 
-            return (Orientation::UP);
+            newOrientation = Orientation::UP;
 
         } break;
     }
+
+    return newOrientation;
 }
 
 Orientation TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
+    Orientation newOrientation;
     switch (orientation) {
 
         case UP: {
@@ -470,7 +480,7 @@ Orientation TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, 1};
 
-            return (Orientation::RIGHT);
+            newOrientation = Orientation::RIGHT;
 
         } break;
 
@@ -480,7 +490,7 @@ Orientation TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, -1};
 
-            return (Orientation::DOWN);
+            newOrientation = Orientation::DOWN;
 
         } break;
 
@@ -490,7 +500,7 @@ Orientation TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, -1};
 
-            return (Orientation::LEFT);
+            newOrientation = Orientation::LEFT;
 
         } break;
 
@@ -500,14 +510,17 @@ Orientation TetrisGame::rotateS(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, 1};
 
-            return (Orientation::UP);
+            newOrientation = Orientation::UP;
 
         } break;
     }
+
+    return newOrientation;
 }
 
 Orientation TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
+    Orientation newOrientation;
     switch (orientation) {
 
         case UP: {
@@ -516,7 +529,7 @@ Orientation TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, -1};
 
-            return (Orientation::RIGHT);
+            newOrientation = Orientation::RIGHT;
 
         } break;
 
@@ -526,7 +539,7 @@ Orientation TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, 1};
 
-            return (Orientation::DOWN);
+            newOrientation = Orientation::DOWN;
 
         } break;
 
@@ -536,7 +549,7 @@ Orientation TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, 1};
 
-            return (Orientation::LEFT);
+            newOrientation = Orientation::LEFT;
 
         } break;
 
@@ -546,14 +559,17 @@ Orientation TetrisGame::rotateZ(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, -1};
 
-            return (Orientation::UP);
+            newOrientation = Orientation::UP;
 
         } break;
     }
+
+    return newOrientation;
 }
 
 Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> &offsets) {
 
+    Orientation newOrientation;
     switch (orientation) {
 
         case UP: {
@@ -562,7 +578,7 @@ Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {-1, 1};
 
-            return (Orientation::RIGHT);
+            newOrientation = Orientation::RIGHT;
 
         } break;
 
@@ -572,7 +588,7 @@ Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {0, 0};
 
-            return (Orientation::DOWN);
+            newOrientation = Orientation::DOWN;
 
         } break;
 
@@ -582,7 +598,7 @@ Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {0, 0};
 
-            return (Orientation::LEFT);
+            newOrientation = Orientation::LEFT;
 
         } break;
 
@@ -592,10 +608,12 @@ Orientation TetrisGame::rotateT(Orientation orientation, std::array<Vector2, 4> 
             offsets.at(2) = {0, 0};
             offsets.at(3) = {1, -1};
 
-            return (Orientation::UP);
+            newOrientation = Orientation::UP;
 
         } break;
     }
+
+    return newOrientation;
 }
 
 // random shape and color

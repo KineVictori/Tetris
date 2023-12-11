@@ -1,5 +1,4 @@
 
-#include <threepp/threepp.hpp>
 #include "MyKeyListener.hpp"
 #include "TetrisGame.hpp"
 #include "TetrisScene.hpp"

@@ -2,9 +2,6 @@
 #ifndef EXAM_TETRIS_ENUMS_HPP
 #define EXAM_TETRIS_ENUMS_HPP
 
-#include <threepp/threepp.hpp>
-
-using namespace threepp;
 
 enum Shapes {
     O = 0,
