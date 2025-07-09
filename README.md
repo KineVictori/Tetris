@@ -1,4 +1,4 @@
-### Kandidatnummer: 10023
+### My first C++ project
 
 # 3D Tetris
 
